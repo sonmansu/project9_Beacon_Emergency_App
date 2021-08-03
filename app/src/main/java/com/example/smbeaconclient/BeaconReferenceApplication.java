@@ -11,6 +11,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.example.smbeaconclient.firebase.MyFirebaseMessagingService;
+import com.example.smbeaconclient.firebase.MyFirestore;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.Identifier;
@@ -104,14 +113,34 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
     @Override
     public void didEnterRegion(Region arg0) {
         Log.d(TAG, "did enter region.");
-        // Send a notification to the user whenever a Beacon
-        // matching a Region (defined above) are first seen.
+        // Send a notification to the user whenever a Beacon matching a Region (defined above) are first seen.
         Log.d(TAG, "Sending notification.");
         sendNotification();
         if (mainActivity != null) {
             // If the Monitoring Activity is visible, we log info about the beacons we have seen on its display
             logToDisplay("I see a beacon again" + arg0);
         }
+        String token = getSharedPreferences("Token", MODE_PRIVATE).getString("token","");
+
+        MyFirestore.getWorkersColInstance().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "document exists, our worker! " + document.getData());
+                        Log.d(TAG, FirebaseMessaging.getInstance().getToken() + "흥");
+                    } else {
+                        Log.d(TAG, "No such document,stranger");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+
 
 
     }
