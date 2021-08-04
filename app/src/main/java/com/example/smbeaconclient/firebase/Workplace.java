@@ -6,14 +6,28 @@ public class Workplace {
     private boolean enter;
     private boolean insider;
 
-    public Workplace(String token, boolean enter) {
+//    public Workplace(String token, boolean enter) {
+//        this.token = token;
+//        this.enter = enter;
+//    }
+
+    public Workplace(String token, boolean insider) {
         this.token = token;
+        this.insider = insider;
     }
     public Workplace(String token) {
         this.token = token;
     }
     public Workplace() {
 
+    }
+
+    public boolean isInsider() {
+        return insider;
+    }
+
+    public void setInsider(boolean insider) {
+        this.insider = insider;
     }
 
     public String getToken() {

@@ -14,27 +14,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String TAG = "MyFirebaseMessagingService";
-    private static String token;
 
-    public interface FirestoreResults {
-        public void onResultGet(String str);
-    }
-    public static void getToken(final FirestoreResults results) {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnSuccessListener(new OnSuccessListener<String>() {
-                    @Override
-                    public void onSuccess(String s) {
-                        token = s;
-                        Log.d(TAG, "토큰1:"+token);
-                        results.onResultGet(token);
-                    }
-                });
-//        Log.d(TAG, "토큰2:"+token);
-//        return token;
-
-    }
-
-    // 새 토큰 발급될 때 호출됨
     /**
      * There are two scenarios when onNewToken is called:
      * 1) When a new token is generated on initial app startup
@@ -45,7 +25,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * C) User clears app data
      */
     @Override
-    public void onNewToken(String token) {
+    public void onNewToken(String token) { // 새 토큰 발급될 때 호출됨
         Log.d(TAG, "Refreshed token: " + token);
 
         //Save token on the phone internal memory  //토큰값을 휴대폰 내부 저장소에 저장
@@ -60,10 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         // write token document on the db //파베 db에다 이 놈의 토큰 문서를 저장함, token field 만 채움
-        Workplace workplace = new Workplace(token);
+        Workplace workplace = new Workplace(token, false);
         MyFirestore.getWorkplaceColRef().document(token).set(workplace);
-
-
-
     }
 }

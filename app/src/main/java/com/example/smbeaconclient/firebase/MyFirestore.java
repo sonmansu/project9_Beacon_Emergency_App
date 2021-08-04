@@ -13,7 +13,5 @@ public class MyFirestore {
         return workersCollection;
     }
     public static CollectionReference getWorkplaceColRef() {return workplaceCollection;}
-    public static CollectionReference getOutsidersColRef() {
-        return outsidersCollection;
-    }
+    public static CollectionReference getOutsidersColRef() {return outsidersCollection;}
 }

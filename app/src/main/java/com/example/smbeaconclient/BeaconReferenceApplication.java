@@ -51,6 +51,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         super.onCreate();
         Log.d(TAG, "onCreate called");
 
+        token = getSharedPreferences("Token", MODE_PRIVATE).getString("token","");
+
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.getBeaconParsers().clear();
         beaconManager.getBeaconParsers().add(new BeaconParser().
@@ -64,7 +66,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         // communicate to users that your app is using resources in the background.
         //
 
-/*
+///*
         // start; comment
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.drawable.ic_launcher);
@@ -93,7 +95,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.setBackgroundScanPeriod(1100);
         // end; comment
-*/
+//*/
 
 
         Log.d(TAG, "setting up background monitoring for beacons and power saving");
@@ -115,16 +117,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         beaconManager.bind(this);
     }
 
-//    public void disableMonitoring() {
-//        if (regionBootstrap != null) {
-//            regionBootstrap.disable();
-//            regionBootstrap = null;
-//        }
-//    }
-//    public void enableMonitoring() {
-//        Region region = new Region("backgroundRegion",null, null, null);
-//        regionBootstrap = new RegionBootstrap(this, region);
-//    }
 
     @Override
     public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called.
@@ -136,34 +128,35 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             // If the Monitoring Activity is visible, we log info about the beacons we have seen on its display
             logToDisplay("I see a beacon again" + region);
         }
-        token = getSharedPreferences("Token", MODE_PRIVATE).getString("token","");
 
-        MyFirestore.getWorkersColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //update "enter" field on the db
+        MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
+
+
+        MyFirestore.getWorkplaceColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "who are you: document exists, our worker! " + document.getData());
+                        boolean insider = document.getBoolean("insider");
+                        if (insider)
+                            Log.d(TAG, "who are you: document exists, our worker! " + document.getData());
+                        else Log.d(TAG, "who are you: No such document,stranger");
                     } else {
-                        Log.d(TAG, "who are you: No such document,stranger");
-                        // write outsider token on the db //파베 db에다 이 놈의 토큰 문서를 기록함
-//                        Outsider outsider = new Outsider(token, true);
-//                        MyFirestore.getOutsidersColInstance().document(token).set(outsider);
-                        //update "enter" field on the db
-                        MyFirestore.getOutsidersColRef().document(token).update("enter", true) //entered the building
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error updating document", e);
-                                    }
-                                });
+                        Log.d(TAG, "No such document");
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -171,18 +164,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             }
         });
 
-//        if (region != null && beaconManager != null)
             beaconManager.startRangingBeacons(region);
-//        else {
-//            Log.d(TAG, "만수-아직도널임");
-//        }
-//        try {
-//            beaconManager.startRangingBeaconsInRegion(region);
-//        }
-//        catch (RemoteException e) {
-//            if (BuildConfig.DEBUG) Log.d(TAG, "Can't start ranging");
-//        }
-
     }
 
     @Override
@@ -194,7 +176,10 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             beaconManager.stopRangingBeacons(region);
 
         //update "enter" field on the db
-        MyFirestore.getOutsidersColRef().document(token).update("enter", false) //left the building
+        MyFirestore
+                .getWorkplaceColRef()
+                .document(token)
+                .update("enter", false) //left the building
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -297,12 +282,14 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                 }
             });
 
+            //가장 강도 높은 Rssi를 가진 비콘의 major값으로 층을 결정
             int floor = beaconList.get(0).getId2().toInt();
-            //가장 강도 높은 Rssi를 가진 비콘의 minor값으로 층을 결정 (minor값에다가 그냥 층 수 저장하고 싶은데 내 폰이 구데기라 minor값 변경 못하는 중)
-            mainActivity.textViewFloor.setText(floor + "Floor");
+
+            if (mainActivity != null)
+                mainActivity.textViewFloor.setText(floor + "Floor");
 
             //update "floor" field on the db
-            MyFirestore.getOutsidersColRef().document(token).update("floor", floor)
+            MyFirestore.getWorkplaceColRef().document(token).update("floor", floor)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
