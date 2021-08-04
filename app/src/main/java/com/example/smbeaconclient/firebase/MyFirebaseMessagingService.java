@@ -2,22 +2,15 @@ package com.example.smbeaconclient.firebase;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.smbeaconclient.MainActivity;
-import com.example.smbeaconclient.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
-
-import org.jetbrains.annotations.NotNull;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String TAG = "MyFirebaseMessagingService";
@@ -40,33 +33,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        return token;
 
     }
-//    public static String getToken() {
-////        FirebaseMessaging.getInstance().getToken()
-////                .addOnCompleteListener(new OnCompleteListener<String>() {
-////                    @Override
-////                    public void onComplete(@NonNull Task<String> task) {
-////                        if (!task.isSuccessful()) {
-////                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-////                            return;
-////                        }
-////                        // Get new FCM registration token
-////                        token = task.getResult();
-////                        // Log and toast
-////                    }
-////                });
-//        FirebaseMessaging.getInstance().getToken()
-//                .addOnSuccessListener(new OnSuccessListener<String>() {
-//                    @Override
-//                    public void onSuccess(String s) {
-//                        token = s;
-//                        Log.d(TAG, "토큰1:"+token);
-//
-//                    }
-//                });
-//        Log.d(TAG, "토큰2:"+token);
-//        return token;
-//
-//    }
 
     // 새 토큰 발급될 때 호출됨
     /**
@@ -93,7 +59,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        sendRegistrationToServer(token); //파베에 토큰 적음
 
         //add Document named token in Workers Collection// Workers콜렉션에 token명을 가진 Doc 추가
-        MyFirestore.getWorkersColInstance().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        MyFirestore.getWorkersColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -102,6 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         Log.d(TAG, "document exists, our worker! " + document.getData());
                     } else {
                         Log.d(TAG, "No such document,stranger");
+
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());

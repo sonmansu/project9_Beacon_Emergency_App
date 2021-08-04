@@ -7,7 +7,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,19 +28,22 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 
-    TextView textViewFloor;
+    TextView textViewFloor, textViewRanging;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate called");
+
 
         textViewFloor = findViewById(R.id.textViewFloor);
+        textViewRanging = findViewById(R.id.textViewRanging);
 
 
         verifyBluetooth();
 
-        /** start; just for temporary; for checking token value; 임시로 작성 , 토큰 확인 용 **/
+        /** start; temporary; for checking token value; 임시로 작성 , 토큰 확인 용 **/
         Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,24 +227,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     /** end of checking permission **/
-
-//    public void onRangingClicked(View view) {
-//        Intent myIntent = new Intent(this, RangingActivity.class);
-//        this.startActivity(myIntent);
-//    }
-    public void onEnableClicked(View view) {
-        BeaconReferenceApplication application = ((BeaconReferenceApplication) this.getApplicationContext());
-        if (BeaconManager.getInstanceForApplication(this).getMonitoredRegions().size() > 0) {
-            application.disableMonitoring();
-            ((Button)findViewById(R.id.enableButton)).setText("Re-Enable Monitoring");
-        }
-        else {
-            ((Button)findViewById(R.id.enableButton)).setText("Disable Monitoring");
-            application.enableMonitoring();
-        }
-
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -292,10 +276,29 @@ public class MainActivity extends AppCompatActivity {
     public void updateLog(final String log) {
         runOnUiThread(new Runnable() {
             public void run() {
-                EditText editText = (EditText)MainActivity.this.findViewById(R.id.monitoringText);
+                EditText editText = (EditText)MainActivity.this.findViewById(R.id.textViewMonitoring);
                 editText.setText(log);
             }
         });
     }
 
 }
+
+/** END OF CODE **/
+
+//    public void onRangingClicked(View view) {
+//        Intent myIntent = new Intent(this, RangingActivity.class);
+//        this.startActivity(myIntent);
+//    }
+//    public void onEnableClicked(View view) {
+//        BeaconReferenceApplication application = ((BeaconReferenceApplication) this.getApplicationContext());
+//        if (BeaconManager.getInstanceForApplication(this).getMonitoredRegions().size() > 0) {
+//            application.disableMonitoring();
+//            ((Button)findViewById(R.id.enableButton)).setText("Re-Enable Monitoring");
+//        }
+//        else {
+//            ((Button)findViewById(R.id.enableButton)).setText("Disable Monitoring");
+//            application.enableMonitoring();
+//        }
+//
+//    }
