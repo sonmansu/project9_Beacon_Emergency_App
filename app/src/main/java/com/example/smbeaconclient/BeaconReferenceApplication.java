@@ -60,12 +60,12 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
         beaconManager.setDebug(true);
 
+
         // Uncomment the code below to use a foreground service to scan for beacons. This unlocks
         // the ability to continually scan for long periods of time in the background on Andorid 8+
         // in exchange for showing an icon at the top of the screen and a always-on notification to
         // communicate to users that your app is using resources in the background.
         //
-
 ///*
         // start; comment
         Notification.Builder builder = new Notification.Builder(this);
@@ -119,7 +119,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
 
     @Override
-    public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called.
+    public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called. //비콘 영역에 들어갈때 호출
         Log.d(TAG, "Access Region: did enter region.");
         // Send a notification to the user whenever a Beacon matching a Region (defined above) are first seen.
         Log.d(TAG, "Sending notification.");
@@ -164,11 +164,11 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             }
         });
 
-            beaconManager.startRangingBeacons(region);
+        beaconManager.startRangingBeacons(region);
     }
 
     @Override
-    public void didExitRegion(Region region) {
+    public void didExitRegion(Region region) { //비콘 영역에 나올때 호출
         logToDisplay("You've left the building.");
         Log.d(TAG, "Access Region: You've left the building.");
 

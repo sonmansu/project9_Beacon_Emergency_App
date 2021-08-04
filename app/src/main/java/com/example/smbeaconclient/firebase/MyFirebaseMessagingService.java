@@ -11,9 +11,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String TAG = "MyFirebaseMessagingService";
+
+    @Override
+    public void onMessageReceived(@NonNull @NotNull RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
+    }
 
     /**
      * There are two scenarios when onNewToken is called:
