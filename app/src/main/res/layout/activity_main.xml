@@ -11,6 +11,16 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="17dp"
         android:text="Monitoring Events:" />
+    <TextView
+        android:id="@+id/textViewFloor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="17dp"
+        android:background="@color/design_default_color_secondary"
+        android:text="Floor:" />
+
 
     <EditText
         android:id="@+id/monitoringText"

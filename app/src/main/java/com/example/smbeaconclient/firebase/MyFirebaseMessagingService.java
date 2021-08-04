@@ -82,12 +82,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
-        //Save token on the phone memory (?) //토큰값을 휴대폰 메모리에 저장
+        //Save token on the phone internal memory  //토큰값을 휴대폰 내부 저장소에 저장
         SharedPreferences sharedPreferences = getSharedPreferences("Token", MODE_PRIVATE);
         SharedPreferences.Editor editor= sharedPreferences.edit(); //sharedPreferences를 제어할 editor를 선언
         editor.putString("token",token); // key,value 형식으로 저장
         editor.commit();    //최종 커밋. 커밋을 해야 저장이 된다.
-//        Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show(); //error occurs
 
         // If you want to send messages to this application instance or manage this apps subscriptions on the server side,
         // send the FCM registration token to your app server.
