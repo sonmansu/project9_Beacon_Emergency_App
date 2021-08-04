@@ -58,23 +58,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // send the FCM registration token to your app server.
 //        sendRegistrationToServer(token); //파베에 토큰 적음
 
-        //add Document named token in Workers Collection// Workers콜렉션에 token명을 가진 Doc 추가
-        MyFirestore.getWorkersColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "document exists, our worker! " + document.getData());
-                    } else {
-                        Log.d(TAG, "No such document,stranger");
 
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+        // write token document on the db //파베 db에다 이 놈의 토큰 문서를 저장함, token field 만 채움
+        Workplace workplace = new Workplace(token);
+        MyFirestore.getWorkplaceColRef().document(token).set(workplace);
+
+
 
     }
 }

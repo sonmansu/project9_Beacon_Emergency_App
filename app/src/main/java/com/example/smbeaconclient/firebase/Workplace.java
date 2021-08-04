@@ -1,14 +1,18 @@
 package com.example.smbeaconclient.firebase;
 
-public class Outsider {
+public class Workplace {
     private String token;
     private int floor;
     private boolean enter;
+    private boolean insider;
 
-    public Outsider(String token, boolean enter) {
+    public Workplace(String token, boolean enter) {
         this.token = token;
     }
-    public Outsider() {
+    public Workplace(String token) {
+        this.token = token;
+    }
+    public Workplace() {
 
     }
 
