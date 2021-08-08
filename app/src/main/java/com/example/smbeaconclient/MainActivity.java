@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 //                end of get token
             }
         });
-        /** end; just for temporary 임시로 작성 **/
+        /** end; for temporary 임시로 작성 **/
 
 
         /** start of checking permission **/ //there is an error here, need to fix it..//일단 앱 설정가서 위치 액세스 권한 허용 직접 해놓기.
