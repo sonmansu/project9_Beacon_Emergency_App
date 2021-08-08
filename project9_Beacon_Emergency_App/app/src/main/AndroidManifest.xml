@@ -18,10 +18,10 @@
         <activity android:name=".EmergencyActivity">
 
         </activity>
-        <activity android:name=".MAP"/>
+        <activity android:name=".MapActivity"/>
         <activity
             android:name=".MainActivity"/>
-        <activity android:name=".first_main"
+        <activity android:name=".FirstmainActivity"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

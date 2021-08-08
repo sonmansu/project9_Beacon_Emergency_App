@@ -32,11 +32,11 @@
         android:id="@+id/tet"
         android:layout_width="match_parent"
         android:layout_height="137dp"
-        android:text="    PROJECT 9"
-        android:gravity=""
-        android:textColor="@color/white"
         android:fontFamily="@font/lab"
-        android:textSize="60dp"/>
+        android:gravity=""
+        android:text="    PROJECT 9"
+        android:textColor="@color/white"
+        android:textSize="60dp" />
 
 
 </RelativeLayout>

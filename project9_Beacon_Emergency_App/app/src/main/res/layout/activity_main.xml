@@ -19,12 +19,13 @@
         android:layout_marginBottom="271dp"
         android:background="#B0008C8C"
         android:fontFamily="@font/lab"
-        android:text="M A P"
+        android:text="ourcompany"
         android:textColor="@color/black"
-        android:textSize="44dp" />
+        android:textSize="25dp" />
 
     <Button
 
+        android:id="@+id/btn2"
         android:layout_width="199dp"
         android:layout_height="61dp"
         android:layout_alignParentLeft="true"
@@ -33,7 +34,7 @@
         android:layout_marginBottom="433dp"
         android:background="#B700878C"
         android:fontFamily="@font/lab"
-        android:text="OUR COMPANY"
+        android:text="M A P"
         android:textColor="@color/black"
         android:textSize="25dp" />
 </RelativeLayout>
