@@ -1,25 +1,19 @@
 package com.example.smbeaconclient;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.altbeacon.beacon.BeaconManager;
 
@@ -36,38 +30,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate called");
 
+        Button btn1, btn2;
 
-        textViewFloor = findViewById(R.id.textViewFloor);
-        textViewRanging = findViewById(R.id.textViewRanging);
+        btn1 = findViewById(R.id.btn1);
+        btn2 = findViewById(R.id.btn2);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), OurcompanyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
 
         verifyBluetooth();
 
         /** start; temporary; for checking token value; 임시로 작성 , 토큰 확인 용 **/
-        Button logTokenButton = findViewById(R.id.logTokenButton);
-        logTokenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//        start of get token 현재 등록 토큰 가져오기
-                FirebaseMessaging.getInstance().getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                                    return;
-                                }
-                                // Get new FCM registration token
-                                String token = task.getResult();
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt, token);
-                                Log.d(TAG, msg);
-                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-//                end of get token
-            }
-        });
+
         /** end; for temporary 임시로 작성 **/
 
 
@@ -227,13 +218,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     /** end of checking permission **/
-    @Override
-    public void onResume() {
-        super.onResume();
-        BeaconReferenceApplication application = ((BeaconReferenceApplication) this.getApplicationContext());
-        application.setMonitoringActivity(this);
-        updateLog(application.getLog());
-    }
+
 
     @Override
     public void onPause() {
@@ -273,14 +258,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void updateLog(final String log) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                EditText editText = (EditText)MainActivity.this.findViewById(R.id.textViewMonitoring);
-                editText.setText(log);
-            }
-        });
-    }
+
 
 }
 
