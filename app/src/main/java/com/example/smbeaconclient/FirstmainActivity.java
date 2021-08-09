@@ -25,5 +25,4 @@ public class first_main  extends AppCompatActivity {
             }
         });
     }
-
 }
