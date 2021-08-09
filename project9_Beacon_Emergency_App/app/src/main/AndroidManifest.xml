@@ -19,6 +19,7 @@
 
         </activity>
         <activity android:name=".MapActivity"/>
+        <activity android:name=".OurcompanyActivity"/>
         <activity
             android:name=".MainActivity"/>
         <activity android:name=".FirstmainActivity"
