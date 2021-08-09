@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 // This class is used for background beacon monitoring.
-// 이 클래스는 백그라운드 상태에서 우리 건물 비콘 영역 내에 진입하면 notification을 보내는 클래스입니다
+// 이 클래스는 백그라운드 상태에서 우리 건물 비콘 영역 내에 진입하면 notification을 보내는 클래스입니다 + floor 계산 기능 추가
 public class BeaconReferenceApplication extends Application implements BootstrapNotifier, BeaconConsumer, RangeNotifier {
     private static final String TAG = "BeaconReferenceApp";
     private RegionBootstrap regionBootstrap;
@@ -235,9 +235,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
     private void logToDisplay(String line) {
         cumulativeLog += (line + "\n");
-        if (this.mainActivity != null) {
-            this.mainActivity.updateLog(cumulativeLog);
-        }
+
     }
 
     public String getLog() {
