@@ -2,21 +2,20 @@ package com.example.smbeaconclient;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class FirstmainActivity extends AppCompatActivity {
+public class FirstMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_main);
+        setContentView(R.layout.activity_firstmain);
 
-        Button imageButton = (Button) findViewById(R.id.btn1);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        Button btnCheck = (Button) findViewById(R.id.btnCheck);
+        btnCheck.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {

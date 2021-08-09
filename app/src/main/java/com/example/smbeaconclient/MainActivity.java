@@ -30,12 +30,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate called");
 
-        Button btn1, btn2;
+        Button btnMap, btnOurCompany;
 
-        btn1 = findViewById(R.id.btn1);
-        btn2 = findViewById(R.id.btn2);
+        btnMap = findViewById(R.id.btnMap);
+        btnOurCompany = findViewById(R.id.btnOurCompany);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
+        btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MapActivity.class);
@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn2.setOnClickListener(new View.OnClickListener() {
+        btnOurCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), OurcompanyActivity.class);
+                Intent intent = new Intent(getApplicationContext(), OurCompanyActivity.class);
                 startActivity(intent);
             }
         });

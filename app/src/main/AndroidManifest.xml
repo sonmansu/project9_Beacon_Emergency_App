@@ -19,10 +19,10 @@
 
         </activity>
         <activity android:name=".MapActivity"/>
-        <activity android:name=".OurcompanyActivity"/>
+        <activity android:name=".OurCompanyActivity"/>
         <activity
             android:name=".MainActivity"/>
-        <activity android:name=".FirstmainActivity"
+        <activity android:name=".FirstMainActivity"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -8,12 +8,11 @@
 
 
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/btnCheck"
         android:layout_width="199dp"
         android:layout_height="61dp"
-        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="108dp"
         android:layout_marginBottom="134dp"
         android:background="#00498c"
         android:fontFamily="@font/lab"
@@ -22,21 +21,22 @@
         android:textSize="44dp" />
 
     <ImageView
-        android:id="@+id/mAni"
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
+        android:scaleType= "fitXY"
         android:src="@drawable/beacon_main" />
 
     <TextView
-        android:id="@+id/tet"
-        android:layout_width="match_parent"
-        android:layout_height="137dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/lab"
         android:gravity=""
-        android:text="    PROJECT 9"
+        android:text="PROJECT 9"
         android:textColor="@color/white"
-        android:textSize="60dp" />
+        android:textSize="50dp" />
 
 
 </RelativeLayout>
