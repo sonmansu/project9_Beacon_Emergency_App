@@ -13,8 +13,15 @@
         android:scaleType="fitXY"
         android:src="@drawable/evacuation" />
 
-
-
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="26dp"
+        android:layout_marginBottom="461dp"
+        android:background="@color/white" />
 
 
 </RelativeLayout>
