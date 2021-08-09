@@ -66,7 +66,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         // in exchange for showing an icon at the top of the screen and a always-on notification to
         // communicate to users that your app is using resources in the background.
         //
-/*
+///*
         // start; comment
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.drawable.ic_launcher);
@@ -95,7 +95,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.setBackgroundScanPeriod(1100);
         // end; comment
-*/
+//*/
 
 
         Log.d(TAG, "setting up background monitoring for beacons and power saving");
@@ -305,4 +305,5 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
         }
     }
+
 }

@@ -1,12 +1,19 @@
 package com.example.smbeaconclient.firebase;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.example.smbeaconclient.EmergencyActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,6 +25,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.jetbrains.annotations.NotNull;
+
+import kotlin.text.Regex;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String TAG = "MyFirebaseMessagingService";
@@ -44,20 +53,89 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_LONG).show();
         Looper.loop();
     }
+
+    String myUrgentChannel;
     @Override
     public void onMessageReceived(RemoteMessage msg) {
-        Log.d(TAG, "onMessageReceived called");
-        Log.i("### msg : ", msg.toString());
-        if (msg.getData().isEmpty()) {
-            showNotificationMessage(msg.getNotification().getTitle(), msg.getNotification().getBody());  // Notification으로 받을 때
-        } else {
-            showDataMessage(msg.getData().get("title"), msg.getData().get("content"));  // Data로 받을 때
+//        Log.d(TAG, "onMessageReceived called");
+//        Log.i("### msg : ", msg.toString());
+//        if (msg.getData().isEmpty()) {
+//            showNotificationMessage(msg.getNotification().getTitle(), msg.getNotification().getBody());  // Notification으로 받을 때
+//        } else {
+//            showDataMessage(msg.getData().get("title"), msg.getData().get("content"));  // Data로 받을 때
+//        }
+//
+//        Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
+//        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(i);
+
+        Log.d(TAG, "From: " + msg.getFrom());
+
+        myUrgentChannel = this.getPackageName();// init value
+
+        String body = msg.getNotification().getBody();
+//        var body = msg.GetNotification().Body;
+        Log.d(TAG, "Notification Message Body: " + body);
+
+        SendNotifications(msg);
+    }
+
+    public void SendNotifications(RemoteMessage message) { try { NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+        var seed = Convert.ToInt32(Regex.Match(Guid.NewGuid().ToString(), @"\d+").Value);
+        int id = new Random(seed).Next(000000000, 999999999);
+
+        var push = new Intent();
+
+        var fullScreenPendingIntent = PendingIntent.GetActivity(this, 0,
+                push, PendingIntentFlags.CancelCurrent);
+
+
+        NotificationCompat.Builder notification;
+
+        if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+        {
+            var chan1 = new NotificationChannel(myUrgentChannel,
+                    new Java.Lang.String("Primary"), NotificationImportance.High);
+            chan1.LightColor = Color.Green;
+
+            manager.CreateNotificationChannel(chan1);
+
+            notification = new NotificationCompat.Builder(this, myUrgentChannel).SetOngoing(true);
+        }
+        else
+        {
+            notification = new NotificationCompat.Builder(this);
         }
 
-        Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+        notification.SetOngoing(true);
+        notification.SetAutoCancel(true);
+
+        var clickaction = message.GetNotification().ClickAction;
+        notification.SetContentIntent(fullScreenPendingIntent)
+                .SetContentTitle(message.GetNotification().Title)
+                .SetContentText(message.GetNotification().Body)
+                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.img123))
+                .SetSmallIcon(Resource.Drawable.img123)
+                .SetStyle((new NotificationCompat.BigTextStyle()))
+                .SetPriority(NotificationCompat.PriorityHigh)
+                .SetColor(0x9c6114)
+                .SetAutoCancel(true)g
+                .SetOngoing(true);
+
+
+        manager.Notify(id, notification.Build());
+
+        // start a new app here
+        Intent i = PackageManager.("com.companyname.formapp1");
+        StartActivity(i);
+
     }
+    catch (System.Exception ex)
+    {
+        System.Diagnostics.Debug.WriteLine("ecsption = "+ ex.StackTrace);
+    }
+    }fd
 
     /**
      * There are two scenarios when onNewToken is called:
