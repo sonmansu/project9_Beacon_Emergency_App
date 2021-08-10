@@ -42,7 +42,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
     private static final String TAG = "BeaconReferenceApp";
     private RegionBootstrap regionBootstrap;
     private BackgroundPowerSaver backgroundPowerSaver;
-    private MainActivity mainActivity = null;
+    private DebugActivity debugActivity = null;
     private String cumulativeLog = "";
     BeaconManager beaconManager;
     String token;
@@ -71,7 +71,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.drawable.ic_launcher);
         builder.setContentTitle("Scanning for Beacons");
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, debugActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
@@ -120,15 +120,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
     @Override
     public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called. //비콘 영역에 들어갈때 호출
-        Log.d(TAG, "Access Region: did enter region.");
-        // Send a notification to the user whenever a Beacon matching a Region (defined above) are first seen.
-        Log.d(TAG, "Sending notification.");
-        sendNotification();
-        if (mainActivity != null) {
-            // If the Monitoring Activity is visible, we log info about the beacons we have seen on its display
-            logToDisplay("I see a beacon again" + region);
-        }
-
         //update "enter" field on the db
         MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -143,6 +134,17 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                         Log.w(TAG, "Error updating document", e);
                     }
                 });
+
+        Log.d(TAG, "Access Region: did enter region.");
+        // Send a notification to the user whenever a Beacon matching a Region (defined above) are first seen.
+        Log.d(TAG, "Sending notification.");
+        sendNotification();
+        if (debugActivity != null) {
+            // If the Monitoring Activity is visible, we log info about the beacons we have seen on its display
+            logToDisplay("I see a beacon again" + region);
+        }
+
+
 
 
         MyFirestore.getWorkplaceColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -219,7 +221,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         }
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntent(new Intent(this, MainActivity.class));
+        stackBuilder.addNextIntent(new Intent(this, DebugActivity.class));
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setSmallIcon(R.drawable.ic_beacon);
@@ -229,13 +231,15 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         notificationManager.notify(1, builder.build());
     }
 
-    public void setMonitoringActivity(MainActivity activity) {
-        this.mainActivity = activity;
+    public void setMonitoringActivity(DebugActivity activity) {
+        this.debugActivity = activity;
     }
 
     private void logToDisplay(String line) {
         cumulativeLog += (line + "\n");
-
+        if (this.debugActivity != null) {
+            this.debugActivity.updateLog(cumulativeLog);
+        }
     }
 
     public String getLog() {
@@ -268,8 +272,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                         + "\nRSSI: " + beaconList.get(i).getRssi()
                         + "\nDist: " + roundedDist + "\n\n");
             }
-            if (mainActivity!= null)
-                mainActivity.textViewRanging.setText(sb.toString());
+            if (debugActivity!= null)
+                debugActivity.textViewRanging.setText(sb.toString());
 
             // sort 층 출력을 위해 Rssi값을 기준으로 비콘 리스트 정렬
             Collections.sort(beaconList, new Comparator<Beacon>() {
@@ -283,8 +287,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             //가장 강도 높은 Rssi를 가진 비콘의 major값으로 층을 결정
             int floor = beaconList.get(0).getId2().toInt();
 
-            if (mainActivity != null)
-                mainActivity.textViewFloor.setText(floor + "Floor");
+            if (debugActivity != null)
+                debugActivity.textViewFloor.setText(floor + "Floor");
 
             //update "floor" field on the db
             MyFirestore.getWorkplaceColRef().document(token).update("floor", floor)

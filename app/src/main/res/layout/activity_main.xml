@@ -35,4 +35,12 @@
         android:text="ourcompany"
         android:textColor="@color/black"
         android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/logTokenButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="토큰 조회 get token" />
 </RelativeLayout>
