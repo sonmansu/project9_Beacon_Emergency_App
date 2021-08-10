@@ -3,15 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/font/font.xml" value="0.3963541666666667" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_emergency.xml" value="0.2" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/build.xml" value="0.2869791666666667" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/layout.xml" value="0.152" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/map.xml" value="0.152" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/my_main.xml" value="0.2" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/office.xml" value="0.31666666666666665" />
-        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/ouu_compa.xml" value="0.2" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_debug.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_debuging.xml" value="0.15625" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_emergency.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_firstmain.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/activity_main.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/map.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/my_main.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/sk716/AndroidStudioProjects/project9_Beacon_Emergency_App/app/src/main/res/layout/mycompany.xml" value="0.15625" />
       </map>
     </option>
   </component>
