@@ -119,7 +119,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
 
     private void sendNotification(String messageBody, Bitmap image, String TrueOrFalse) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, EmergencyActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("AnotherActivity", TrueOrFalse);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
