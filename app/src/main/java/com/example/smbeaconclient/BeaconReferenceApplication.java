@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -99,7 +100,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
 
         Log.d(TAG, "setting up background monitoring for beacons and power saving");
-        // wake up the app when our building's beacon is seen (our building's beacon UUID value is like below.)
+        // wake up the app when our building's beacon is seen (our building's beacon UUID value is like below.)//비콘 정보를 설정못했다면 두번쨰 매개변수도 null로 바꿔주세요
         Region region = new Region("backgroundRegion", Identifier.parse("cc36ea67-0748-4394-9840-596a14faa1fd"), null, null);
         regionBootstrap = new RegionBootstrap(this, region);
 
@@ -121,7 +122,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
     @Override
     public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called. //비콘 영역에 들어갈때 호출
         //update "enter" field on the db
-        MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
+        FirebaseFirestore.getInstance().collection("workplace").document(token).update("enter", true) //entered the building
+//        MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -146,25 +148,26 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
 
 
-
-        MyFirestore.getWorkplaceColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        boolean insider = document.getBoolean("insider");
-                        if (insider)
-                            Log.d(TAG, "who are you: document exists, our worker! " + document.getData());
-                        else Log.d(TAG, "who are you: No such document,stranger");
+        if (token != null) {
+            MyFirestore.getWorkplaceColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            boolean insider = document.getBoolean("insider");
+                            if (insider)
+                                Log.d(TAG, "who are you: document exists, our worker! " + document.getData());
+                            else Log.d(TAG, "who are you: No such document,stranger");
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
                     } else {
-                        Log.d(TAG, "No such document");
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
                 }
-            }
-        });
+            });
+        }
 
         beaconManager.startRangingBeacons(region);
     }

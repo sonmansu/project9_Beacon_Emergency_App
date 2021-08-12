@@ -2,33 +2,42 @@ package com.example.smbeaconclient;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.smbeaconclient.firebase.MyFirestore;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.altbeacon.beacon.BeaconManager;
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
-    protected static final String TAG = "MainActivity";
+    protected static final String TAG = "MainActivitylog";
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 
     TextView textViewFloor, textViewRanging;
+    private PermissionSupport permission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +50,61 @@ public class MainActivity extends AppCompatActivity {
         btnMap = findViewById(R.id.btnMap);
         btnOurCompany = findViewById(R.id.btnOurCompany);
 
-        //add
+        permissionCheck();
+//        permissionCheck2();
+
+        //Start; Get phone information 단말정보 읽어오기
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        String phoneNum = tm.getLine1Number(); //get phone number
+        Log.d(TAG, phoneNum);
+        String token = getSharedPreferences("Token", MODE_PRIVATE).getString("token","");
+
+        MyFirestore.getWorkplaceColRef().document(token).update("tell",phoneNum).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG,"SUCCESS");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        Log.d(TAG, "failed!");
+                    }
+                });
+
+
+
+        //파베 테스트
+        MyFirestore.getWorkplaceColRef().document("hi").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d(TAG, String.valueOf(documentSnapshot.getData()));
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        Log.d(TAG,"fail");
+                    }
+                });
+
+
+
+        /** start; temporary; for checking token value; 임시로 작성 , 토큰 확인 용 **/
         Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//        start of get token 현재 등록 토큰 가져오기
                 FirebaseMessaging.getInstance().getToken()
                         .addOnCompleteListener(new OnCompleteListener<String>() {
                             @Override
@@ -66,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 //                end of get token
             }
         });
-        //add
+        /** end; for temporary 임시로 작성 **/
 
 
         btnMap.setOnClickListener(new View.OnClickListener() {
@@ -85,132 +143,83 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
         verifyBluetooth();
 
-        /** start; temporary; for checking token value; 임시로 작성 , 토큰 확인 용 **/
+//        /** start of checking permission **/ //there is an error here, need to fix it..//일단 앱 설정가서 위치 액세스 권한 허용 직접 해놓기.
 
-        /** end; for temporary 임시로 작성 **/
+    }
 
-
-        /** start of checking permission **/ //there is an error here, need to fix it..//일단 앱 설정가서 위치 액세스 권한 허용 직접 해놓기.
-//        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                if (this.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-//                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                        builder.setTitle("This app needs background location access");
-//                        builder.setMessage("Please grant location access so this app can detect beacons in the background.");
-//                        builder.setPositiveButton(android.R.string.ok, null);
-//                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                            @TargetApi(23)
-//                            @Override
-//                            public void onDismiss(DialogInterface dialog) {
-//                                requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-//                                        PERMISSION_REQUEST_BACKGROUND_LOCATION);
-//                            }
-//                        });
-//                        builder.show();
-//                    }
-//                    else {
-//                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                        builder.setTitle("Functionality limited");
-//                        builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
-//                        builder.setPositiveButton(android.R.string.ok, null);
-//                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                            @Override
-//                            public void onDismiss(DialogInterface dialog) {
-//                            }
-//                        });
-//                        builder.show();
-//                    }
-//                }
-//            }
-//        } else {
-//            if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-//                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-//                                Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION);
-//            } else {
-//                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//                builder.setTitle("Functionality limited");
-//                builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
-//                builder.setPositiveButton(android.R.string.ok, null);
-//                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                    @Override
-//                    public void onDismiss(DialogInterface dialog) {
-//                    }
-//                });
-//                builder.show();
-//            }
-//        }
-//    }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (this.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("This app needs background location access");
-                            builder.setMessage("Please grant location access so this app can detect beacons in the background.");
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                                @TargetApi(23)
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                                            PERMISSION_REQUEST_BACKGROUND_LOCATION);
-                                }
-
-                            });
-                            builder.show();
-                        }
-                        else {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("Functionality limited");
-                            builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                }
-
-                            });
-                            builder.show();
-                        }
+    private void permissionCheck2() {
+        if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { //안드로이드 29이상부턴 직접 가서 설정해줘야함
+                if (this.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)  != PackageManager.PERMISSION_GRANTED) {
+                    if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("This app needs background location access");
+                        builder.setMessage("Please grant location access so this app can detect beacons in the background.");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @TargetApi(23)
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                                        PERMISSION_REQUEST_BACKGROUND_LOCATION);
+                            }
+                        });
+                        builder.show();
+                    }  else {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Functionality limited");
+                        builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
+                        builder.setPositiveButton(android.R.string.ok, null);
+                        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                            }
+                        });
+                        builder.show();
                     }
                 }
+            }
+        } else {
+            if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PERMISSION_REQUEST_FINE_LOCATION);
             } else {
-                if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, //수행됨, 메세지 창 안 뜸
-                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                            PERMISSION_REQUEST_FINE_LOCATION);
-                }
-                else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
-                    builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
-                    });
-                    builder.show();
-                }
-
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Functionality limited");
+                builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                    }
+                });
+                builder.show();
             }
         }
     }
 
+    private void permissionCheck() {
+        // 방금 전 만들었던 클래스 객체 생성
+        permission = new PermissionSupport(this, this);
+
+        // 권한 체크한 후에 리턴이 false로 들어온다면
+        if (!permission.checkPermission()){
+            // 권한 요청을 해줍니다.
+            permission.requestPermission();
+        }
+    }
+//    // Request Permission에 대한 결과 값을 받아올 수 있습니다.
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        // 여기서도 리턴이 false로 들어온다면 (사용자가 권한 허용을 거부하였다면)
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (!permission.permissionResult(requestCode, permissions, grantResults)) {
+//            // 저의 경우는 여기서 다시 Permission 요청을 걸었습니다.
+//            permission.requestPermission();
+//        }
+//    }
+//
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -251,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    /** end of checking permission **/
+//    /** end of checking permission **/
 
 
     @Override
