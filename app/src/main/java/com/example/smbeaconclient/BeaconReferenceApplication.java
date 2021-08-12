@@ -67,12 +67,12 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         // in exchange for showing an icon at the top of the screen and a always-on notification to
         // communicate to users that your app is using resources in the background.
         //
-/*
+///*
         // start; comment
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setContentTitle("Scanning for Beacons");
-        Intent intent = new Intent(this, debugActivity.class);
+        builder.setSmallIcon(R.drawable.ic_beacon);
+        builder.setContentTitle("Building entry and exit monitoring");
+        Intent intent = new Intent(this, FirstMainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
@@ -96,7 +96,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         beaconManager.setBackgroundBetweenScanPeriod(0);
         beaconManager.setBackgroundScanPeriod(1100);
         // end; comment
-*/
+//*/
 
 
         Log.d(TAG, "setting up background monitoring for beacons and power saving");
@@ -224,7 +224,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         }
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntent(new Intent(this, DebugActivity.class));
+        stackBuilder.addNextIntent(new Intent(this, FirstMainActivity.class));
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setSmallIcon(R.drawable.ic_beacon);

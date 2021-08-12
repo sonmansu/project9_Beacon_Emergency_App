@@ -22,11 +22,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 public class FirstMainActivity extends AppCompatActivity {
-    String TAG = "FirstMainActivity";
+    String TAG = "FirstMainActivitylog";
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 
-    private static final int PERMISSIONS_REQUEST_CODE = 22;
+    private static final int PERMISSIONS_REQUEST_PHONE = 3;
+
+    private final int MULTIPLE_PERMISSIONS_CODE = 1023;
+
     private PermissionSupport permission;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -44,9 +47,8 @@ public class FirstMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 //        permissionCheck();
-        permissionCheck2();
+//        permissionCheck2();
 
         if (chkPermission()) {
             // 휴대폰 정보는 TelephonyManager 를 이용
@@ -85,69 +87,104 @@ public class FirstMainActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_BACKGROUND_LOCATION,
     };
     /** start; **/
-@RequiresApi(api = Build.VERSION_CODES.Q)
+
 public boolean chkPermission() {
     // 위험 권한을 모두 승인했는지 여부
     boolean mPermissionsGranted = false;
-//    String[] mRequiredPermissions = new String[1];
-    String[] mRequiredPermissions = {
-            Manifest.permission.READ_PHONE_NUMBERS,
-            Manifest.permission.READ_SMS,
-    };
+    String[] mRequiredPermissions = new String[2];
 
     // 승인 받기 위한 권한 목록
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { //30
         mRequiredPermissions[0] = Manifest.permission.READ_PHONE_NUMBERS;
     }else{
-        mRequiredPermissions[0] = Manifest.permission.READ_PRECISE_PHONE_STATE;
+        mRequiredPermissions[0] = Manifest.permission.READ_PHONE_STATE;
     }
+    mRequiredPermissions[1] = Manifest.permission.ACCESS_FINE_LOCATION;
 
     // 필수 권한을 가지고 있는지 확인한다.
-    mPermissionsGranted = hasPermissions(mRequiredPermissions);
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        mPermissionsGranted = hasPermissions(mRequiredPermissions, FOREGROUND_LOCATION_PERMISSIONS, BACKGROUND_LOCATION_PERMISSIONS);
+//        for
+//    } else {
+//
+//    }
 
     // 필수 권한 중에 한 개라도 없는 경우
     if (!mPermissionsGranted) {
         // 권한을 요청한다.
-//        ActivityCompat.requestPermissions(FirstMainActivity.this, mRequiredPermissions, PERMISSIONS_REQUEST_CODE);
+        ActivityCompat.requestPermissions(FirstMainActivity.this, mRequiredPermissions, MULTIPLE_PERMISSIONS_CODE);
 
-        ActivityCompat.requestPermissions(FirstMainActivity.this, FOREGROUND_LOCATION_PERMISSIONS, 1);
+//        ActivityCompat.requestPermissions(FirstMainActivity.this, FOREGROUND_LOCATION_PERMISSIONS, 1);
 // Check the first statement grant needed permissions, and then run the second line:
-        ActivityCompat.requestPermissions(FirstMainActivity.this, BACKGROUND_LOCATION_PERMISSIONS, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            ActivityCompat.requestPermissions(FirstMainActivity.this, BACKGROUND_LOCATION_PERMISSIONS, 1);
+            ActivityCompat.requestPermissions(FirstMainActivity.this, BACKGROUND_LOCATION_PERMISSIONS, MULTIPLE_PERMISSIONS_CODE);
+        }
     }
 
     return mPermissionsGranted;
 }
 
-    public boolean hasPermissions(String[] permissions) {
+    public boolean hasPermissions(String[] permissions, String[] pm1, String[] pm2) {
         // 필수 권한을 가지고 있는지 확인한다.
         for (String permission : permissions) {
-            if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+            if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED ) {
                 return false;
+            }
+        }
+        for (String permission : pm1) {
+            if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED ) {
+                return false;
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            for (String permission : pm2) {
+                if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
         }
         return true;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            // 권한을 모두 승인했는지 여부
-            boolean chkFlag = false;
-            // 승인한 권한은 0 값, 승인 안한 권한은 -1을 값으로 가진다.
-            for (int g : grantResults) {
-                if (g == -1) {
-                    chkFlag = true;
-                    break;
-                }
-            }
-
-            // 권한 중 한 개라도 승인 안 한 경우
-            if (chkFlag){
-                chkPermission();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case PERMISSIONS_REQUEST_PHONE: {
+//                // 권한을 모두 승인했는지 여부
+//                boolean chkFlag = false;
+//                // 승인한 권한은 0 값, 승인 안한 권한은 -1을 값으로 가진다.
+//                for (int g : grantResults) {
+//                    if (g == -1) {
+//                        chkFlag = true;
+//                        break;
+//                    }
+//                }
+//                // 권한 중 한 개라도 승인 안 한 경우
+//                if (chkFlag) {
+//                    chkPermission();
+//                }
+//            }
+//            case PERMISSION_REQUEST_FINE_LOCATION: {
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    Log.d(TAG, "fine location permission granted");
+//                } else {
+//                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                    builder.setTitle("Functionality limited");
+//                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.");
+//                    builder.setPositiveButton(android.R.string.ok, null);
+//                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                        @Override
+//                        public void onDismiss(DialogInterface dialog) {
+//                        }
+//
+//                    });
+//                    builder.show();
+//                }
+//            }
+//        }
+//    }
     /** end**/
 
 
@@ -212,15 +249,20 @@ public boolean chkPermission() {
         }
     }
     //    // Request Permission에 대한 결과 값을 받아올 수 있습니다.
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        // 여기서도 리턴이 false로 들어온다면 (사용자가 권한 허용을 거부하였다면)
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (!permission.permissionResult(requestCode, permissions, grantResults)) {
-//            // 저의 경우는 여기서 다시 Permission 요청을 걸었습니다.
-//            permission.requestPermission();
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // 여기서도 리턴이 false로 들어온다면 (사용자가 권한 허용을 거부하였다면)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == MULTIPLE_PERMISSIONS_CODE && (grantResults.length > 0)){
+            for(int i=0; i < grantResults.length ; i++){
+                //grantResults 가 0이면 사용자가 허용한 것이고 / -1이면 거부한 것입니다.
+                // -1이 있는지 체크하여 하나라도 -1이 나온다면 false를 리턴해주었습니다.
+                if(grantResults[i] == -1){
+                    chkPermission();
+                }
+            }
+        }
+    }
 //
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
