@@ -24,14 +24,15 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType= "fitXY"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/beacon_main" />
 
     <TextView
-        android:layout_centerHorizontal="true"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:fontFamily="@font/lab"
         android:gravity=""
         android:text="PROJECT 9"

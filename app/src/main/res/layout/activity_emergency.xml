@@ -1,21 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmergencyActivity"
-    android:orientation="vertical">
+    android:background="#F2FF3D00"
+    android:orientation="vertical"
+    tools:context=".EmergencyActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="663dp"
+        android:fontFamily="@font/lab"
+        android:gravity=""
+        android:text="  EMERGENCY"
+        android:textSize="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="578dp"
+        android:gravity=""
+        android:text=" Number of people "
+        android:textSize="38dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="439dp"
+        android:gravity=""
+        android:text=" 1F :   37"
+        android:textSize="38dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="511dp"
+        android:gravity=""
+        android:text=" 2F :   13 "
+        android:textSize="38dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="348dp"
+        android:gravity=""
+        android:text=" Evacuation route on floor "
+        android:textSize="31dp" />
 
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:src="@drawable/fire"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fire~!"
-        android:textSize="30sp"/>
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ffff" />
 
 
-</LinearLayout>
+</RelativeLayout>
