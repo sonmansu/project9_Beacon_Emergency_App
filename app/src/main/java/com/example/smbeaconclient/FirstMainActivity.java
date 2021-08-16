@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.FirebaseMessagingService;
+
 public class FirstMainActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +25,7 @@ public class FirstMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
 }

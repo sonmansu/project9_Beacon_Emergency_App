@@ -15,7 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMBeaconClient">
-        <activity android:name=".EmergencyActivity">
+        <activity android:name=".EmergencyActivity"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="EmergencyActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".MapActivity"/>
         <activity android:name=".OurCompanyActivity"/>
@@ -47,7 +52,7 @@
                 </service>
 
 <!--        브로드캐스트리시버-->
-        <receiver android:name=".FcmReceiver"
+        <receiver android:name=".FcmBroadcastReceiver"
             android:enabled="true"
             android:exported="false"/>
 <!--            <intent-filter>-->

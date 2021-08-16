@@ -1,6 +1,5 @@
 package com.example.smbeaconclient.firebase;
 
-import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -9,37 +8,29 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.graphics.drawable.IconCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.smbeaconclient.EmergencyActivity;
-import com.example.smbeaconclient.FcmReceiver;
-import com.example.smbeaconclient.MainActivity;
+import com.example.smbeaconclient.FcmBroadcastReceiver;
 import com.example.smbeaconclient.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static String TAG = "MyFirebaseMessagingService";
+    private static String TAG = "MyFirebaseMessagingServicelog";
     Bitmap bitmap;
+
+    //only called when the app is in the foreground
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // There are two types of messages data messages and notification messages. Data messages are handled
@@ -78,23 +69,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //To get a Bitmap image from the URL received
         bitmap = getBitmapfromUrl(imageUri);
 
-        final Intent intent = new Intent(getApplicationContext(), FcmReceiver.class); // Receiver 설정
-        intent.setAction("example.test.broadcast");
-        sendBroadcast(intent);
+
+        //broadcast intent
+        final Intent intent2 = new Intent(getApplicationContext(), FcmBroadcastReceiver.class); // Receiver 설정
+        intent2.setAction("example.test.broadcast");
+        sendBroadcast(intent2);
         Log.d(TAG, "SendBroadcast");
+////
+//        sendNotification(message, bitmap, TrueOrFlase, imageUri);
 
-        sendNotification(message, bitmap, TrueOrFlase);
 
-
-
-        //앱이실행중일때만 동작함
-//        Intent intent = new Intent();
-//        intent.setAction(Intent.ACTION_MAIN);
-//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        //start activity intent
+//        앱이실행중일때만 동작함
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        ComponentName cn = new ComponentName(this, EmergencyActivity.class);
-//        intent.setComponent(cn);
-//        startActivity(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        ComponentName cn = new ComponentName(this, EmergencyActivity.class);
+        intent.setComponent(cn);
+        startActivity(intent);
 
 
         //
@@ -118,21 +113,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Create and show a simple notification containing the received FCM message.
      */
 
-    private void sendNotification(String messageBody, Bitmap image, String TrueOrFalse) {
+    private void sendNotification(String messageBody, Bitmap image, String TrueOrFalse, String imageUri) {
+        ((BitmapDrawable)(ContextCompat.getDrawable(this,R.drawable.ic_flame))).getBitmap();
+
         Intent intent = new Intent(this, EmergencyActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("AnotherActivity", TrueOrFalse);
+        intent.putExtra("imageUri", imageUri);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        String channelId = "one-channel";
+        String channelName = "My Channel One1";
+        String channelDescription = "My Channel One Description";
+
+
+
+//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setLargeIcon(image)/*Notification icon image*/
-//                .setSmallIcon(R.drawable.app_icon)
-                .setSmallIcon(IconCompat.createWithBitmap(image))
+                .setSmallIcon(R.drawable.ic_flame)
+//                .setSmallIcon(IconCompat.createWithBitmap(image))
+//                .setLargeIcon(image) //not work
                 .setContentTitle(messageBody)
-                .setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigPicture(image))/*Notification with Image*/
+//                .setStyle(new NotificationCompat.BigPictureStyle()
+//                        .bigPicture(image))/*Notification with Image*/
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
@@ -180,7 +185,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         SharedPreferences sharedPreferences = getSharedPreferences("Token", MODE_PRIVATE);
         SharedPreferences.Editor editor= sharedPreferences.edit(); //sharedPreferences를 제어할 editor를 선언
         editor.putString("token",token); // key,value 형식으로 저장
-        editor.commit();    //최종 커밋. 커밋을 해야 저장이 된다.
+        editor.apply();    //최종 커밋. 커밋을 해야 저장이 된다.
 
         // write token document on the db //파베 db에다 이 놈의 토큰 문서를 저장함, token field 만 채움
         Workplace workplace = new Workplace(token, false);
