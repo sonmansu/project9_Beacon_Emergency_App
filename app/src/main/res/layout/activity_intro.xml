@@ -13,7 +13,7 @@
         android:layout_height="61dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="134dp"
+        android:layout_marginBottom="94dp"
         android:background="#00498c"
         android:fontFamily="@font/lab"
         android:text="C H E C K"
@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/beacon_main" />
+        android:src="@drawable/deungdae" />
 
     <TextView
         android:id="@+id/textView"
