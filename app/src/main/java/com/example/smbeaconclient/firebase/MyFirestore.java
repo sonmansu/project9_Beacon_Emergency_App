@@ -20,7 +20,7 @@ public class MyFirestore {
 //    private static CollectionReference outsidersCollection = db.collection("outsiders");
 
     //using
-    private static CollectionReference workplaceCollection = db.collection("workplace2");
+    private static CollectionReference workplaceCollection = db.collection("workplace3");
 
 //    public static CollectionReference getWorkersColRef() {
 //        return workersCollection;

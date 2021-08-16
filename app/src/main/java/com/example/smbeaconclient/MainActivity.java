@@ -54,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String phoneNum = tm.getLine1Number(); //get phone number
-        Log.d(TAG, phoneNum);
+        if (phoneNum != null)
+            Log.d(TAG, "phoneNum 널 아님");
+        else Log.d(TAG, "phoneNum 널");
 
         String token = getSharedPreferences("Token", MODE_PRIVATE).getString("token","");
-
+        Log.d(TAG, "토큰: " + token);
         MyFirestore.getWorkplaceColRef().document(token).update("tell",phoneNum).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
