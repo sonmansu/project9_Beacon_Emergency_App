@@ -1,71 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmergencyActivity"
-    android:orientation="vertical">
+    android:background="#F2FF3D00"
+    android:orientation="vertical"
+    tools:context=".EmergencyActivity">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/fire"/>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="There's a fire on the "/>
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"/>
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" floor"/>
-    </LinearLayout>
+        android:layout_height="70dp"
+        android:fontFamily="@font/lab"
+        android:gravity="center_horizontal"
+        android:text="EMERGENCY"
+        android:textSize="60dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Number of people by floor"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1F: "/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="30"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2F: "/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="20"/>
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text=" Number of people "
+        android:textSize="38dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Evacuation route on the floor"/>
+        android:id="@+id/tv1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text=" 1F :   37"
+        android:textSize="38dp" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text=" 2F :   13 "
+        android:textSize="38dp" />
+
+    <TextView
+        android:id="@+id/tvUserFloor"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text=" Evacuation route on the 2 floor "
+        android:textSize="31dp" />
 
     <ImageView
         android:id="@+id/imageViewEvac"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/evacuation_1" />
 
 
 </LinearLayout>

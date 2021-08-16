@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMBeaconClient">
         <activity android:name=".EmergencyActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTop">
+<!--            android:launchMode="singleInstance">-->
             <intent-filter>
                 <action android:name="EmergencyActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
