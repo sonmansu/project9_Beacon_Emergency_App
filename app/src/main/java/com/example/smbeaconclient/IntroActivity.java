@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -24,8 +25,9 @@ import androidx.core.app.ActivityCompat;
 public class IntroActivity extends AppCompatActivity {
     String TAG = "IntroActivitylog";
 
-    private final int PERMISSION_CODE_MULTIPLES = 3;
+    private final int PERMISSION_CODE_MULTIPLES = 1;
     private static final int PERMISSION_CODE_BACKGROUND_LOCATION = 2;
+    private static final int PERMISSION_CODE_DRAW_OVERLAY = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,20 +86,23 @@ public class IntroActivity extends AppCompatActivity {
         }else{
             mRequiredPermissions[0] = Manifest.permission.READ_PHONE_STATE;
         }
-        mRequiredPermissions[1] = Manifest.permission.ACCESS_COARSE_LOCATION; //for android 12 needed, GPS
+        mRequiredPermissions[1] = Manifest.permission.ACCESS_COARSE_LOCATION; //needed for android 12 , GPS
         mRequiredPermissions[2] = Manifest.permission.ACCESS_FINE_LOCATION;   //GPS approximate location
 
+//        mPermissionsGranted = hasPermissions(mReq/uiredPermissions);
 
-        //Check that user have the necessary permissions
-        mPermissionsGranted = hasPermissions(mRequiredPermissions);
+        //Check that user have the necessary permissions and ask for the permissions
+        for (String permission : mRequiredPermissions) {
+            if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(IntroActivity.this, mRequiredPermissions, PERMISSION_CODE_MULTIPLES);
+            }
+        }
 
+        if (!Settings.canDrawOverlays(getApplicationContext())) showOverlayDialog();
 
-        // If don't have any of the required permissions, ask for the permissions.
-        if (!mPermissionsGranted) {
-            ActivityCompat.requestPermissions(IntroActivity.this, mRequiredPermissions, PERMISSION_CODE_MULTIPLES);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                backgroundPermissionDialog();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)  != PackageManager.PERMISSION_GRANTED) {
+                showBackgroundPermissionDialog();
             }
         }
 
@@ -116,6 +121,8 @@ public class IntroActivity extends AppCompatActivity {
                 return false;
             }
         }
+        if (!Settings.canDrawOverlays(getApplicationContext())) return false;
+
         return true;
     }
 
@@ -124,7 +131,7 @@ public class IntroActivity extends AppCompatActivity {
     private void requestBackgroundPermission() {
         ActivityCompat.requestPermissions(IntroActivity.this, BACKGROUND_LOCATION_PERMISSIONS, PERMISSION_CODE_BACKGROUND_LOCATION);
     }
-    private void backgroundPermissionDialog() {
+    private void showBackgroundPermissionDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("This app needs background location access");
         builder.setMessage("Please set it to 'always allow' so this app can detect beacons in the background.");
@@ -134,9 +141,36 @@ public class IntroActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 requestBackgroundPermission();
             }
+        }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
         });
-
         builder.show();
+    }
+    void showOverlayDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.dialog_overlaypermission, null);
+
+        androidx.appcompat.app.AlertDialog.Builder msgBuilder = new androidx.appcompat.app.AlertDialog.Builder(IntroActivity.this)
+                .setTitle("This app needs drawing over other apps permission")
+                .setMessage("Please find our 'Project9' app and set permission")
+                .setView(dialoglayout)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestOverlayPermissions();
+                    }
+                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+        androidx.appcompat.app.AlertDialog msgDlg = msgBuilder.create();
+        msgDlg.show();
+    }
+    private void requestOverlayPermissions() {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+        startActivityForResult(intent, PERMISSION_CODE_DRAW_OVERLAY);
     }
 
 
@@ -144,20 +178,21 @@ public class IntroActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == PERMISSION_CODE_MULTIPLES && (grantResults.length > 0) ||
-           requestCode == PERMISSION_CODE_BACKGROUND_LOCATION && (grantResults.length > 0)  ){
+                requestCode == PERMISSION_CODE_BACKGROUND_LOCATION && (grantResults.length > 0) ||
+                requestCode == PERMISSION_CODE_DRAW_OVERLAY && (grantResults.length > 0)        ) {
 
-
-            for(int i=0; i < grantResults.length ; i++){
+            for (int i = 0; i < grantResults.length; i++) {
                 // If grantResults is 0, it means you allowed it, -1 means you denied it
-                if(grantResults[i] == -1){
+                if (grantResults[i] == -1) {
                     Toast.makeText(IntroActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
                     chkPermission();
                 }
             }
-        } else {
-            Toast.makeText(IntroActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
-            chkPermission();
         }
+//        } else {
+//            Toast.makeText(IntroActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
+//            chkPermission();
+//        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.smbeaconclient;
+package com.example.smbeaconclient.ztrash;
 
 import android.Manifest;
 import android.app.Activity;
