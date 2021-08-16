@@ -81,10 +81,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     @SuppressLint("MissingPermission")
     @Override
-    public void onNewToken(String token) { // 새 토큰 발급될 때 호출됨
+    public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
-        //Save token on the phone internal memory  //토큰값을 휴대폰 내부 저장소에 저장
+        //Save token on the phone internal memory
         SharedPreferences sharedPreferences = getSharedPreferences("Token", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit(); //sharedPreferences를 제어할 editor를 선언
         editor.putString("token", token); // key,value 형식으로 저장

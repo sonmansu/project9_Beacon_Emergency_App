@@ -37,8 +37,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
-// This class is used for background beacon monitoring.
-// 이 클래스는 백그라운드 상태에서 우리 건물 비콘 영역 내에 진입하면 notification을 보내는 클래스입니다 + floor 계산 기능 추가
+// This class is used for background beacon monitoring and calculate the floor  .
 public class BeaconReferenceApplication extends Application implements BootstrapNotifier, BeaconConsumer, RangeNotifier {
     private static final String TAG = "BeaconReferenceApp";
     private RegionBootstrap regionBootstrap;
@@ -72,7 +71,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.drawable.ic_beacon);
         builder.setContentTitle("Building entry and exit monitoring");
-        Intent intent = new Intent(this, FirstMainActivity.class);
+        Intent intent = new Intent(this, IntroActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
         );
@@ -100,7 +99,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
 
         Log.d(TAG, "setting up background monitoring for beacons and power saving");
-        // wake up the app when our building's beacon is seen (our building's beacon UUID value is like below.)//비콘 정보를 설정못했다면 두번쨰 매개변수도 null로 바꿔주세요
+        // wake up the app when our building's beacon is seen (our building's beacon UUID value is like below.)
+        // If you test this app for your own beacon, you need to change the beacon's value below.
         Region region = new Region("backgroundRegion", Identifier.parse("cc36ea67-0748-4394-9840-596a14faa1fd"), null, null);
         regionBootstrap = new RegionBootstrap(this, region);
 
@@ -120,7 +120,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
 
     @Override
-    public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called. //비콘 영역에 들어갈때 호출
+    public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called.
         //update "enter" field on the db
         FirebaseFirestore.getInstance().collection("workplace").document(token).update("enter", true) //entered the building
 //        MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
@@ -145,7 +145,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             // If the Monitoring Activity is visible, we log info about the beacons we have seen on its display
             logToDisplay("I see a beacon again" + region);
         }
-
 
 
         if (token != null) {
@@ -173,7 +172,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
     }
 
     @Override
-    public void didExitRegion(Region region) { //비콘 영역에 나올때 호출
+    public void didExitRegion(Region region) {
         logToDisplay("You've left the building.");
         Log.d(TAG, "Access Region: You've left the building.");
 
@@ -181,10 +180,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             beaconManager.stopRangingBeacons(region);
 
         //update "enter" field on the db
-        MyFirestore
-                .getWorkplaceColRef()
-                .document(token)
-                .update("enter", false) //left the building
+        MyFirestore.getWorkplaceColRef().document(token).update("enter", false) //left the building
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -197,9 +193,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                         Log.w(TAG, "Error updating document", e);
                     }
                 });
-
-
-
     }
 
     @Override
@@ -224,7 +217,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         }
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntent(new Intent(this, FirstMainActivity.class));
+        stackBuilder.addNextIntent(new Intent(this, IntroActivity.class));
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setSmallIcon(R.drawable.ic_beacon);

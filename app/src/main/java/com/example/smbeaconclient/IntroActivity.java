@@ -2,7 +2,6 @@ package com.example.smbeaconclient;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,8 +21,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-public class FirstMainActivity extends AppCompatActivity {
-    String TAG = "FirstMainActivitylog";
+public class IntroActivity extends AppCompatActivity {
+    String TAG = "IntroActivitylog";
 
     private final int PERMISSION_CODE_MULTIPLES = 3;
     private static final int PERMISSION_CODE_BACKGROUND_LOCATION = 2;
@@ -31,7 +30,7 @@ public class FirstMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_firstmain);
+        setContentView(R.layout.activity_intro);
 
         Button btnCheck = (Button) findViewById(R.id.btnCheck);
         btnCheck.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +94,7 @@ public class FirstMainActivity extends AppCompatActivity {
 
         // If don't have any of the required permissions, ask for the permissions.
         if (!mPermissionsGranted) {
-            ActivityCompat.requestPermissions(FirstMainActivity.this, mRequiredPermissions, PERMISSION_CODE_MULTIPLES);
+            ActivityCompat.requestPermissions(IntroActivity.this, mRequiredPermissions, PERMISSION_CODE_MULTIPLES);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 backgroundPermissionDialog();
@@ -123,7 +122,7 @@ public class FirstMainActivity extends AppCompatActivity {
     // Starting with Android API 30, backgroundPermission must be set up directly
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void requestBackgroundPermission() {
-        ActivityCompat.requestPermissions(FirstMainActivity.this, BACKGROUND_LOCATION_PERMISSIONS, PERMISSION_CODE_BACKGROUND_LOCATION);
+        ActivityCompat.requestPermissions(IntroActivity.this, BACKGROUND_LOCATION_PERMISSIONS, PERMISSION_CODE_BACKGROUND_LOCATION);
     }
     private void backgroundPermissionDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -151,12 +150,12 @@ public class FirstMainActivity extends AppCompatActivity {
             for(int i=0; i < grantResults.length ; i++){
                 // If grantResults is 0, it means you allowed it, -1 means you denied it
                 if(grantResults[i] == -1){
-                    Toast.makeText(FirstMainActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IntroActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
                     chkPermission();
                 }
             }
         } else {
-            Toast.makeText(FirstMainActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(IntroActivity.this, "This app will not be available if you do not accept all of the permissions.", Toast.LENGTH_SHORT).show();
             chkPermission();
         }
     }

@@ -33,11 +33,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
     protected static final String TAG = "MainActivitylog";
-    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-    private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
-
-    TextView textViewFloor, textViewRanging;
-    private PermissionSupport permission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         btnOurCompany = findViewById(R.id.btnOurCompany);
 
 
-        //Start; Get phone information 단말정보 읽어오기
+        //Start; Get phone information
         TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        /** start; temporary; for checking token value; 임시로 작성 , 토큰 확인 용 **/
+        /** start; for checking token value; **/
         Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 //                end of get token
             }
         });
-        /** end; for temporary 임시로 작성 **/
+        /** end; for temporary **/
 
 
         btnMap.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +154,6 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
     }
-
-
-
 }
 
 /** END OF CODE **/

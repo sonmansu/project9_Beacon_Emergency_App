@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!--Android 10 (API tnwns 29) 에서는 아래 권한까지 필요-->
+<!--Android 10 (API 29) needed-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <!-- Grants the READ_PHONE_STATE permission only on devices that run Android 10 (API level 29) and lower. -->
@@ -30,7 +30,7 @@
         <activity android:name=".MapActivity"/>
         <activity android:name=".OurCompanyActivity"/>
         <activity android:name=".MainActivity"/>
-        <activity android:name=".FirstMainActivity"
+        <activity android:name=".IntroActivity"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
