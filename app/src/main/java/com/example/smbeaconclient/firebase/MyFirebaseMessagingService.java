@@ -1,5 +1,6 @@
 package com.example.smbeaconclient.firebase;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -70,26 +71,51 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         bitmap = getBitmapfromUrl(imageUri);
 
 
-        //broadcast intent
+        //start; 00 broadcast intent
         final Intent intent2 = new Intent(getApplicationContext(), FcmBroadcastReceiver.class); // Receiver 설정
         intent2.setAction("example.test.broadcast");
         sendBroadcast(intent2);
         Log.d(TAG, "SendBroadcast");
 ////
 //        sendNotification(message, bitmap, TrueOrFlase, imageUri);
+        //end; 00
 
 
-        //start activity intent
-//        앱이실행중일때만 동작함
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        //start activity intent
+////        01앱이실행중일때만 동작함
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_MAIN);
+//        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+////        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//        ComponentName cn = new ComponentName(this, EmergencyActivity.class);
+//        intent.setComponent(cn);
+//        startActivity(intent);
 
-        ComponentName cn = new ComponentName(this, EmergencyActivity.class);
-        intent.setComponent(cn);
-        startActivity(intent);
+        //start; 02새 intent추가
+        Intent fullScreenIntent = new Intent(this, EmergencyActivity.class);
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
+                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        String CHANNEL_ID = "one-channel";
+        String channelName = "My Channel One1";
+        String channelDescription = "My Channel One Description";
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_flame)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setFullScreenIntent(fullScreenPendingIntent, true);
+
+//        NotificationManager notificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        notificationManager.notify(0 /* ID of notification */, builder.build());
+
+        Notification incomingCallNotification = notificationBuilder.build();
+        //end; 02
 
 
         //
