@@ -65,9 +65,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String message = remoteMessage.getData().get("message");
         //imageUri will contain URL of the image to be displayed with Notification
         String imageUri = remoteMessage.getData().get("image");
-        int floor = Integer.parseInt(remoteMessage.getData().get("floor"));
+        int floorUser = Integer.parseInt(remoteMessage.getData().get("floor"));
+        int floorFire = Integer.parseInt(remoteMessage.getData().get("fire_floor"));
+        String people1f = (remoteMessage.getData().get("floor_1_people"));
+        String people2f = (remoteMessage.getData().get("floor_2_people"));
         Log.d(TAG, "imageUri: " + imageUri);
-        Log.d(TAG, "floor: " + floor);
 
         //If the key AnotherActivity has  value as True then when the user taps on notification, in the app AnotherActivity will be opened.
         //If the key AnotherActivity has  value as False then when the user taps on notification, in the app MainActivity will be opened.
@@ -75,7 +77,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //To get a Bitmap image from the URL received
         bitmap = getBitmapfromUrl(imageUri);
-
 
 //        //start; 00 broadcast intent 됨
 //        final Intent intent2 = new Intent(getApplicationContext(), FcmBroadcastReceiver.class); // Receiver 설정
@@ -97,7 +98,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// | Intent.FLAG_ACTIVITY_NEW_TASK); //error
         intent.putExtra("imageUri", imageUri);
-        intent.putExtra("floor", floor);
+        intent.putExtra("floorUser", floorUser);
+        intent.putExtra("floorFire", floorFire);
+        intent.putExtra("people1f", people1f);
+        intent.putExtra("people2f", people2f);
 
         ComponentName cn = new ComponentName(this, EmergencyActivity.class);
         intent.setComponent(cn);

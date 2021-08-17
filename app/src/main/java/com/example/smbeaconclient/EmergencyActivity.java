@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -20,8 +19,10 @@ import java.net.URL;
 
 public class EmergencyActivity extends AppCompatActivity {
     ImageView imageViewEvac;
-    TextView tv1, tv2, tvUserFloor;
+    TextView tv1, tv2, tvFloorUser, tvFloorFire;
     private String TAG = "EmergencyActivityLog";
+    String imageUri, strUserFloor, strFloorFire, people1f, people2f;
+    int floorUser, floorFire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,27 +31,27 @@ public class EmergencyActivity extends AppCompatActivity {
 
         Log.d(getClass().getSimpleName(), "onCreate");
 
-        // 잠금 화면 위로 activity 띄워줌
+        // Show activity even in lock screen state
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 
-
-
-        Intent intent = getIntent();
-//        String imageUri = "";// = intent.getStringExtra("imageUri");
-        String imageUri = intent.getStringExtra("imageUri");
-        int floor = intent.getIntExtra("floor", 0);
-//        Log.d(TAG, "imageUri: " + imageUri);
-        Log.d(TAG, "floor: " + floor);
-
+        //init view
         imageViewEvac = findViewById(R.id.imageViewEvac);
         tv1 = findViewById(R.id.tv1);
         tv2 = findViewById(R.id.tv2);
-        tvUserFloor = findViewById(R.id.tvUserFloor);
-//        imageViewEvac.setImageBitmap(getBitmapfromUrl(imageUri));
-//        imageViewEvac.setImageURI(Uri.parse(imageUri));
+        tvFloorUser = findViewById(R.id.tvUserFloor);
+        tvFloorFire = findViewById(R.id.tvFloorFire);
+
+        //get intent
+        Intent intent = getIntent();
+        imageUri = intent.getStringExtra("imageUri");
+        floorUser = intent.getIntExtra("floorUser", 0);
+        floorFire = intent.getIntExtra("floorFire", 0);
+        people1f = intent.getStringExtra("people1f");
+        people2f = intent.getStringExtra("people2f");
+        Log.d(TAG, "floorUser: " + floorUser);
 
         Glide.with(EmergencyActivity.this)
                 .load(imageUri)
@@ -58,9 +59,17 @@ public class EmergencyActivity extends AppCompatActivity {
                 .error(R.drawable.app_icon)
                 .into(imageViewEvac);
 
-        String strUserFloor = "Evacuation route on the " + floor + " floor";
-        tvUserFloor.setText(strUserFloor);
+        strUserFloor = "Evacuation route on the " + floorUser + " floor";
+        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
+        tvFloorUser.setText(strUserFloor);
+        tv1.setText(people1f);
+        tv2.setText(people2f);
+        tvFloorFire.setText(strFloorFire);
 
+
+
+        //        imageViewEvac.setImageBitmap(getBitmapfromUrl(imageUri));
+//        imageViewEvac.setImageURI(Uri.parse(imageUri));
 
     }
 
@@ -87,9 +96,27 @@ public class EmergencyActivity extends AppCompatActivity {
         Log.d(TAG, "onNewIntent called");
         super.onNewIntent(intent);
         setIntent(intent);
-        String imageUri = intent.getStringExtra("imageUri");
-        int floor = intent.getIntExtra("floor", 0);
-        String strUserFloor = "Evacuation route on the " + floor + " floor";
-        tvUserFloor.setText(strUserFloor);
+
+        imageUri = intent.getStringExtra("imageUri");
+        floorUser = intent.getIntExtra("floorUser", 0);
+        floorFire = intent.getIntExtra("floorFire", 0);
+        people1f = intent.getStringExtra("people1f");
+        people2f = intent.getStringExtra("people2f");
+
+
+        Glide.with(EmergencyActivity.this)
+                .load(imageUri)
+                .fallback(R.drawable.app_icon)
+                .error(R.drawable.app_icon)
+                .into(imageViewEvac);
+
+        strUserFloor = "Evacuation route on the " + floorUser + " floor";
+        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
+        tvFloorUser.setText(strUserFloor);
+        tv1.setText(people1f);
+        tv2.setText(people2f);
+        tvFloorFire.setText(strFloorFire);
+
+
     }
 }

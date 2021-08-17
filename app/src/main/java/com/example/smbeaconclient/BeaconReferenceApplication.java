@@ -55,8 +55,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.getBeaconParsers().clear();
-        beaconManager.getBeaconParsers().add(new BeaconParser().
-                setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")); //Adding iBeacon Layout Code
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24")); //Adding iBeacon Layout Code
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("s:0-1=feaa,m:2-2=00,p:3-3:-41,i:4-13,i:14-19")); //EDDYSTONE  UID Layout Code
 
         beaconManager.setDebug(true);
 
@@ -124,8 +124,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
     @Override
     public void didEnterRegion(Region region) { //When you entered in Beacon region, this method is called.
         //update "enter" field on the db
-        FirebaseFirestore.getInstance().collection("workplace").document(token).update("enter", true) //entered the building
-//        MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
+        MyFirestore.getWorkplaceColRef().document(token).update("enter", true) //entered the building
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
