@@ -34,9 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/lab"
-        android:gravity=""
         android:text="PROJECT 9"
         android:textColor="@color/white"
+        android:layout_marginTop="10dp"
         android:textSize="50dp" />
 
 
