@@ -17,7 +17,7 @@
         android:maxSdkVersion="29" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
 <!--    <uses-permission android:name="android.permission.READ_SMS" />-->
-
+<!--    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />-->
 
     <application
         android:name=".BeaconReferenceApplication"
@@ -28,7 +28,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMBeaconClient">
 
-
+        <activity android:name=".EmergencyActivity"
+            android:launchMode="singleTop">
+<!--            android:launchMode="singleInstance">-->
+            <intent-filter>
+                <action android:name="EmergencyActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".MapActivity"/>
         <activity android:name=".OurCompanyActivity"/>
         <activity android:name=".MainActivity"/>
@@ -57,7 +64,23 @@
         </service>
     </application>
 
+<!--        <service-->
+<!--            android:name=".firebase.MyFirebaseMessagingService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
+
+<!--&lt;!&ndash;        브로드캐스트리시버&ndash;&gt;-->
+<!--        <receiver android:name=".FcmBroadcastReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"/>-->
+<!--&lt;!&ndash;            <intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;                <action android:name="example.test.broadcast"></action>&ndash;&gt;-->
+<!--&lt;!&ndash;            </intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;        </receiver>&ndash;&gt;-->
 
 
 </manifest>

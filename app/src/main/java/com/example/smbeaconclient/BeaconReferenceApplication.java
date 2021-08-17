@@ -102,6 +102,8 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         // wake up the app when our building's beacon is seen (our building's beacon UUID value is like below.)
         // If you test this app for your own beacon, you need to change the beacon's value below.
         Region region = new Region("backgroundRegion", Identifier.parse("cc36ea67-0748-4394-9840-596a14faa1fd"), null, null);
+//        Region region = new Region("backgroundRegion", null, null, null);
+
         regionBootstrap = new RegionBootstrap(this, region);
 
         // simply constructing this class and holding a reference to it in your custom Application
