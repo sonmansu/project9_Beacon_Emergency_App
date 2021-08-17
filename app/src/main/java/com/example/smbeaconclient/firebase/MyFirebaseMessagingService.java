@@ -35,7 +35,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static String TAG = "MyFirebaseMessagingServicelog";
     Bitmap bitmap;
 
-    //only called when the app is in the foreground
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // There are two types of messages data messages and notification messages. Data messages are handled
@@ -71,24 +70,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String people2f = (remoteMessage.getData().get("floor_2_people"));
         Log.d(TAG, "imageUri: " + imageUri);
 
-        //If the key AnotherActivity has  value as True then when the user taps on notification, in the app AnotherActivity will be opened.
-        //If the key AnotherActivity has  value as False then when the user taps on notification, in the app MainActivity will be opened.
-        String TrueOrFlase = remoteMessage.getData().get("AnotherActivity");
 
         //To get a Bitmap image from the URL received
         bitmap = getBitmapfromUrl(imageUri);
 
-//        //start; 00 broadcast intent 됨
+//        //start; 00 broadcast intent; it works
 //        final Intent intent2 = new Intent(getApplicationContext(), FcmBroadcastReceiver.class); // Receiver 설정
 //        intent2.setAction("example.test.broadcast");
 //        sendBroadcast(intent2);
 //        Log.d(TAG, "SendBroadcast");
-//////
 ////        sendNotification(message, bitmap, TrueOrFlase, imageUri);
 //        //end; 00
 
 
-        //start activity intent 됨
+        //start; activity intent; work
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -102,12 +97,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("floorFire", floorFire);
         intent.putExtra("people1f", people1f);
         intent.putExtra("people2f", people2f);
-
         ComponentName cn = new ComponentName(this, EmergencyActivity.class);
         intent.setComponent(cn);
         startActivity(intent);
+        sendNotification(message, bitmap, imageUri);
+        //end; activity intent; work
 
-//        //start; 02새 intent추가 안됨
+//        //start; not work
 //        Intent fullScreenIntent = new Intent(this, EmergencyActivity.class);
 //        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
 //                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -171,20 +167,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //            showDataMessage(msg.getData().get("title"), msg.getData().get("content"));  // Data로 받을 때
 //        }
 
-    private void sendNotification(String messageBody, Bitmap image, String TrueOrFalse, String imageUri) {
+    private void sendNotification(String messageBody, Bitmap image, String imageUri) {
         ((BitmapDrawable)(ContextCompat.getDrawable(this,R.drawable.ic_flame))).getBitmap();
 
-        Intent intent = new Intent(this, EmergencyActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("AnotherActivity", TrueOrFalse);
-        intent.putExtra("imageUri", imageUri);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+//        Intent intent = new Intent(this, EmergencyActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra("AnotherActivity", TrueOrFalse);
+//        intent.putExtra("imageUri", imageUri);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,new Intent(), // add this
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         String channelId = "one-channel";
         String channelName = "My Channel One1";
         String channelDescription = "My Channel One Description";
-
 
 
 //        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -193,7 +190,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.ic_flame)
 //                .setSmallIcon(IconCompat.createWithBitmap(image))
 //                .setLargeIcon(image) //not work
-                .setContentTitle(messageBody)
+//                .setContentTitle(messageBody)
+                .setContentTitle("zz")
 //                .setStyle(new NotificationCompat.BigPictureStyle()
 //                        .bigPicture(image))/*Notification with Image*/
                 .setAutoCancel(true)

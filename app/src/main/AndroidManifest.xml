@@ -28,6 +28,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SMBeaconClient">
 
+        <activity android:name=".IntroActivity"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <activity android:name=".EmergencyActivity"
             android:launchMode="singleTop">
 <!--            android:launchMode="singleInstance">-->
@@ -38,15 +48,15 @@
         </activity>
         <activity android:name=".MapActivity"/>
         <activity android:name=".OurCompanyActivity"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".IntroActivity"
-            android:launchMode="singleInstance">
+        <activity android:name=".EmergencyActivity2">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="EmergencyActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+
         </activity>
+        <activity android:name=".MainActivity"/>
+
 
         <activity android:name=".DebugActivity">
         <intent-filter>
