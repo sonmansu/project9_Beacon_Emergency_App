@@ -27,8 +27,8 @@ public class EmergencyActivity extends AppCompatActivity {
     ImageView imageViewEvac;
     TextView tv1, tv2, tvFloorUser, tvFloorFire, tvTitle;
     private String TAG = "EmergencyActivityLog";
-    String imageUri, strUserFloor, strFloorFire, people1f, people2f;
-    int floorUser, floorFire;
+    String imageUri, strUserFloor, strFloorFire, people1f, people2f, floorUser, floorFire;
+//    int floorUser, floorFire;
 
     Animation animTitle, animData;
 
@@ -74,8 +74,8 @@ public class EmergencyActivity extends AppCompatActivity {
         //get intent
         Intent intent = getIntent();
         imageUri = intent.getStringExtra("imageUri");
-        floorUser = intent.getIntExtra("floorUser", 0);
-        floorFire = intent.getIntExtra("floorFire", 0);
+        floorUser = intent.getStringExtra("floorUser");
+        floorFire = intent.getStringExtra("floorFire");
         people1f = intent.getStringExtra("people1f");
         people2f = intent.getStringExtra("people2f");
         Log.d(TAG, "floorUser: " + floorUser);
@@ -86,12 +86,17 @@ public class EmergencyActivity extends AppCompatActivity {
                 .error(R.drawable.app_icon)
                 .into(imageViewEvac);
 
-        strUserFloor = "Evacuation route on the " + floorUser + " floor";
-        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
-        tvFloorUser.setText(strUserFloor);
+//        strUserFloor = "Evacuation route on the " + floorUser + " floor";
+//        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
+//        tvFloorUser.setText(strUserFloor);
+//        tv1.setText(people1f);
+//        tv2.setText(people2f);
+//        tvFloorFire.setText(strFloorFire);
+        tvFloorUser.setText(floorUser);
         tv1.setText(people1f);
         tv2.setText(people2f);
-        tvFloorFire.setText(strFloorFire);
+        tvFloorFire.setText(floorFire);
+
 
 
         //        imageViewEvac.setImageBitmap(getBitmapfromUrl(imageUri));
@@ -125,8 +130,8 @@ public class EmergencyActivity extends AppCompatActivity {
         setIntent(intent);
 
         imageUri = intent.getStringExtra("imageUri");
-        floorUser = intent.getIntExtra("floorUser", 0);
-        floorFire = intent.getIntExtra("floorFire", 0);
+        floorUser = intent.getStringExtra("floorUser");
+        floorFire = intent.getStringExtra("floorFire");
         people1f = intent.getStringExtra("people1f");
         people2f = intent.getStringExtra("people2f");
 
@@ -137,12 +142,12 @@ public class EmergencyActivity extends AppCompatActivity {
                 .error(R.drawable.app_icon)
                 .into(imageViewEvac);
 
-        strUserFloor = "Evacuation route on the " + floorUser + " floor";
-        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
-        tvFloorUser.setText(strUserFloor);
+//        strUserFloor = "Evacuation route on the " + floorUser + " floor";
+//        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
+        tvFloorUser.setText(floorUser);
         tv1.setText(people1f);
         tv2.setText(people2f);
-        tvFloorFire.setText(strFloorFire);
+        tvFloorFire.setText(floorFire);
 
 
         tvFloorUser.startAnimation(animData);

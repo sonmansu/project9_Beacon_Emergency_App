@@ -51,18 +51,33 @@
         app:trackColor="#4BFFFFFF"
         app:trackCornerRadius="5dp"
         app:trackThickness="3dp" />
-    <TextView
-        android:id="@+id/tvFloorFire"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fire detected on the 3 floor !"
-        android:textSize="30sp" />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fire detected on the "
+            android:textSize="25sp" />
+        <TextView
+            android:id="@+id/tvFloorFire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textSize="25sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" floor !"
+            android:textSize="25sp" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Number of people "
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
 
@@ -75,13 +90,13 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="1F : "
-            android:textSize="28sp" />
+            android:textSize="22sp" />
         <TextView
             android:id="@+id/tv1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="37"
-            android:textSize="28sp" />
+            android:textSize="22sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -92,21 +107,38 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="2F : "
-            android:textSize="28sp" />
+            android:textSize="22sp" />
         <TextView
             android:id="@+id/tv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="34"
-            android:textSize="28sp" />
+            android:textSize="22sp" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/tvUserFloor"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Evacuation route on the 2 floor "
-        android:textSize="30sp" />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Evacuation route on the "
+            android:textSize="25sp" />
+        <TextView
+            android:id="@+id/tvUserFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="2"
+            android:textSize="25sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text=" floor "
+            android:textSize="25sp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageViewEvac"

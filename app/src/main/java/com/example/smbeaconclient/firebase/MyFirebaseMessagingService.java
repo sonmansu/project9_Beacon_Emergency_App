@@ -64,8 +64,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String message = remoteMessage.getData().get("message");
         //imageUri will contain URL of the image to be displayed with Notification
         String imageUri = remoteMessage.getData().get("image");
-        int floorUser = Integer.parseInt(remoteMessage.getData().get("floor"));
-        int floorFire = Integer.parseInt(remoteMessage.getData().get("fire_floor"));
+//        int floorUser = Integer.parseInt(remoteMessage.getData().get("floor"));
+//        int floorFire = Integer.parseInt(remoteMessage.getData().get("fire_floor"));
+        String floorUser = (remoteMessage.getData().get("floor"));
+        String floorFire = (remoteMessage.getData().get("fire_floor"));
         String people1f = (remoteMessage.getData().get("floor_1_people"));
         String people2f = (remoteMessage.getData().get("floor_2_people"));
         Log.d(TAG, "imageUri: " + imageUri);
