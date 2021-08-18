@@ -275,7 +275,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull @NotNull Exception e) {
-
+                Log.d(TAG, "failed");
+                Log.d(TAG, String.valueOf(e));
             }
         });
     }
