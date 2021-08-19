@@ -104,6 +104,10 @@ public class EmergencyActivity extends AppCompatActivity {
 //        imageViewEvac.setImageURI(Uri.parse(imageUri));
 
     }
+    public void setTextView() {
+
+
+    }
 
     public Bitmap getBitmapfromUrl(String imageUrl) {
         try {
