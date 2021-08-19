@@ -65,7 +65,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         // the ability to continually scan for long periods of time in the background on Andorid 8+
         // in exchange for showing an icon at the top of the screen and a always-on notification to
         // communicate to users that your app is using resources in the background.
-        //
 ///*
         // start; comment
         Notification.Builder builder = new Notification.Builder(this);
@@ -147,7 +146,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             logToDisplay("I see a beacon again" + region);
         }
 
-
+        // Differentiate insider & outsider
         if (token != null) {
             MyFirestore.getWorkplaceColRef().document(token).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -178,7 +177,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         Log.d(TAG, "Access Region: You've left the building.");
 
 //        if (region != null && beaconManager != null)
-            beaconManager.stopRangingBeacons(region);
+        beaconManager.stopRangingBeacons(region);
 
         //update "enter" field on the db
         MyFirestore.getWorkplaceColRef().document(token).update("enter", false) //left the building
@@ -243,11 +242,9 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         return cumulativeLog;
     }
 
-    // 비콘 서비스가 시작되면 이 함수가 호출됨
     @Override
     public void onBeaconServiceConnect() {
         //called each time the BeaconService gets ranging data, which is nominally once per second when beacons are detected.
-        //비콘 영역에 있을때 비콘 범위 데이터 받을때마다 호출됨?
         beaconManager.addRangeNotifier(this);
     }
     @Override
@@ -255,7 +252,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
         Log.d(TAG, "didRangeBeaconsInRegion called");
         if (beacons != null && !beacons.isEmpty()) {
             ArrayList<Beacon> beaconList = (ArrayList<Beacon>) beacons;
-            Log.d(TAG, "[raning] 인식되는 비콘 갯수: " + beaconList.size());
+            Log.d(TAG, "[raning] number of recognized beacons : " + beaconList.size());
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < beaconList.size(); i++) {
                 double roundedDist = Math.round(beaconList.get(i).getDistance()*100)/100.0; // 소수점 두자리에서 반올림한 값으로 출력
@@ -263,7 +260,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                 Log.d(TAG, "[raning]" + i+"'s beacon UUID:" + beaconList.get(i).getId1() + ", Major: " + beaconList.get(i).getId2() +
                         ", Minor: " + beaconList.get(i).getId3() + ", RSSI: " + beaconList.get(i).getRssi() + ", Dist: " + roundedDist) ;
 
-                sb.append(i + "번쨰 beacon UUID:" + beaconList.get(i).getId1()
+                sb.append(i + "'s beacon UUID:" + beaconList.get(i).getId1()
                         + "\nMajor: " + beaconList.get(i).getId2()
                         + "\nMinor: " + beaconList.get(i).getId3()
                         + "\nRSSI: " + beaconList.get(i).getRssi()
@@ -272,7 +269,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
             if (debugActivity!= null)
                 debugActivity.textViewRanging.setText(sb.toString());
 
-            // sort 층 출력을 위해 Rssi값을 기준으로 비콘 리스트 정렬
             Collections.sort(beaconList, new Comparator<Beacon>() {
                 @Override
                 public int compare(Beacon o1, Beacon o2) {
@@ -281,7 +277,7 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                 }
             });
 
-            //가장 강도 높은 Rssi를 가진 비콘의 major값으로 층을 결정
+            //Determining the floor by the major value of the beacon with the most intense Rssi
             int floor = beaconList.get(0).getId2().toInt();
 
             if (debugActivity != null)
@@ -301,7 +297,6 @@ public class BeaconReferenceApplication extends Application implements Bootstrap
                             Log.w(TAG, "Error updating document", e);
                         }
                     });
-
         }
     }
 }

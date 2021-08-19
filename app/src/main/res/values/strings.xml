@@ -2,6 +2,6 @@
     <string name="app_name">Project9</string>
 
 
-    <string name="msg_token_fmt" translatable="false">토큰: %s</string>
+    <string name="msg_token_fmt" translatable="false">token: %s</string>
 
 </resources>

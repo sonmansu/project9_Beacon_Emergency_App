@@ -44,29 +44,15 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         if (chkPermission()) {
-            // 휴대폰 정보는 TelephonyManager 를 이용
+            // For mobile phone information, use Telephony Manager
             TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
-            // READ_PHONE_NUMBERS 또는 READ_PHONE_STATE 권한을 허가 받았는지 확인
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
 
-            Log.d(TAG, "음성통화 상태 : [ getCallState ] >>> " + tm.getCallState());
-            Log.d(TAG, "데이터통신 상태 : [ getDataState ] >>> " + tm.getDataState());
-            Log.d(TAG, "전화번호 : [ getLine1Number ] >>> " + tm.getLine1Number());
-            Log.d(TAG, "통신사 ISO 국가코드 : [ getNetworkCountryIso ] >>> "+tm.getNetworkCountryIso());
-            Log.d(TAG, "통신사 ISO 국가코드 : [ getSimCountryIso ] >>> "+tm.getSimCountryIso());
-            Log.d(TAG, "망사업자 MCC+MNC : [ getNetworkOperator ] >>> "+tm.getNetworkOperator());
-            Log.d(TAG, "망사업자 MCC+MNC : [ getSimOperator ] >>> "+tm.getSimOperator());
-            Log.d(TAG, "망사업자명 : [ getNetworkOperatorName ] >>> "+tm.getNetworkOperatorName());
-            Log.d(TAG, "망사업자명 : [ getSimOperatorName ] >>> "+tm.getSimOperatorName());
-            Log.d(TAG, "SIM 카드 상태 : [ getSimState ] >>> "+tm.getSimState());
-
-            // 유니크한 단말 번호 >>> Android ID 사용
-            @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID);
-            Log.d(TAG, "Android_ID >>> "+android_id);
+            Log.d(TAG, "phone number : [ getLine1Number ] >>> " + tm.getLine1Number());
         }
 
 

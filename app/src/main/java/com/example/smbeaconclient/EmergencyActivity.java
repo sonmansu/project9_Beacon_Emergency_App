@@ -27,8 +27,7 @@ public class EmergencyActivity extends AppCompatActivity {
     ImageView imageViewEvac;
     TextView tv1, tv2, tvFloorUser, tvFloorFire, tvTitle;
     private String TAG = "EmergencyActivityLog";
-    String imageUri, strUserFloor, strFloorFire, people1f, people2f, floorUser, floorFire;
-//    int floorUser, floorFire;
+    String imageUri, people1f, people2f, floorUser, floorFire;
 
     Animation animTitle, animData;
 
@@ -53,8 +52,7 @@ public class EmergencyActivity extends AppCompatActivity {
         tvFloorFire = findViewById(R.id.tvFloorFire);
         tvTitle = findViewById(R.id.tvTitle);
 
-
-        //set anim
+        //init title anim
         animTitle = new AlphaAnimation(0.0f,1.0f);
         animTitle.setDuration(200);
         animTitle.setStartOffset(20);
@@ -62,24 +60,22 @@ public class EmergencyActivity extends AppCompatActivity {
         animTitle.setRepeatCount(Animation.INFINITE);
         tvTitle.setAnimation(animTitle);
 
-//        Animation animation;
-//        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
-//        tvFloorFire.startAnimation(animation);
-
-        //set anim
+        //init data anim
         animData = new AlphaAnimation(0.0f,0.8f);
         animData.setDuration(600); //100 = 1 second
         animData.setStartOffset(20);
 
-
         //get intent
         Intent intent = getIntent();
+        setTextView(intent);
+
+    }
+    public void setTextView(Intent intent) {
         imageUri = intent.getStringExtra("imageUri");
         floorUser = intent.getStringExtra("floorUser");
         floorFire = intent.getStringExtra("floorFire");
         people1f = intent.getStringExtra("people1f");
         people2f = intent.getStringExtra("people2f");
-        Log.d(TAG, "floorUser: " + floorUser);
 
         Glide.with(EmergencyActivity.this)
                 .load(imageUri)
@@ -87,46 +83,12 @@ public class EmergencyActivity extends AppCompatActivity {
                 .error(R.drawable.app_icon)
                 .into(imageViewEvac);
 
-//        strUserFloor = "Evacuation route on the " + floorUser + " floor";
-//        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
-//        tvFloorUser.setText(strUserFloor);
-//        tv1.setText(people1f);
-//        tv2.setText(people2f);
-//        tvFloorFire.setText(strFloorFire);
         tvFloorUser.setText(floorUser);
         tv1.setText(people1f);
         tv2.setText(people2f);
         tvFloorFire.setText(floorFire);
 
-
-
-        //        imageViewEvac.setImageBitmap(getBitmapfromUrl(imageUri));
-//        imageViewEvac.setImageURI(Uri.parse(imageUri));
-
     }
-    public void setTextView() {
-
-
-    }
-
-    public Bitmap getBitmapfromUrl(String imageUrl) {
-        try {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(input);
-            return bitmap;
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-
-        }
-    }
-    long onStopTime = 0;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -134,42 +96,13 @@ public class EmergencyActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
 
-        imageUri = intent.getStringExtra("imageUri");
-        floorUser = intent.getStringExtra("floorUser");
-        floorFire = intent.getStringExtra("floorFire");
-        people1f = intent.getStringExtra("people1f");
-        people2f = intent.getStringExtra("people2f");
+        setTextView(intent);
 
-
-        Glide.with(EmergencyActivity.this)
-                .load(imageUri)
-                .fallback(R.drawable.app_icon)
-                .error(R.drawable.app_icon)
-                .into(imageViewEvac);
-
-//        strUserFloor = "Evacuation route on the " + floorUser + " floor";
-//        strFloorFire = "Fire detected on the " + floorFire + " floor ! ";
-        tvFloorUser.setText(floorUser);
-        tv1.setText(people1f);
-        tv2.setText(people2f);
-        tvFloorFire.setText(floorFire);
-
-
+        //setAnimation
         tvFloorUser.startAnimation(animData);
         tv1.startAnimation(animData);
         tv2.startAnimation(animData);
         tvFloorFire.startAnimation(animData);
-
-        // 계속깜빡임
-//        ObjectAnimator.ofObject(
-//                tvFloorFire, // Object to animating
-//                "textColor", // Property to animate
-//                new ArgbEvaluator(), // Interpolation function
-//                Color.BLUE, // Start color
-//                Color.RED // End color
-//        ).setDuration(1200) // Duration in milliseconds
-//        .start(); // Finally, start the anmation
-
     }
 
 }

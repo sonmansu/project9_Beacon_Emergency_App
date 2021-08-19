@@ -7,11 +7,6 @@ public class Workplace {
     private boolean insider;
     private String tell;
 
-//    public Workplace(String token, boolean enter) {
-//        this.token = token;
-//        this.enter = enter;
-//    }
-
     public Workplace(String token, boolean insider) {
         this.token = token;
         this.insider = insider;

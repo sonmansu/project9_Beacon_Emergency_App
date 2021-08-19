@@ -55,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
 
         String phoneNum = tm.getLine1Number(); //get phone number
         if (phoneNum != null)
-            Log.d(TAG, "phoneNum 널 아님");
-        else Log.d(TAG, "phoneNum 널");
+            Log.d(TAG, "phoneNum not null");
+        else Log.d(TAG, "phoneNum null");
 
         String token = getSharedPreferences("Token", MODE_PRIVATE).getString("token","");
-        Log.d(TAG, "토큰: " + token);
+        Log.d(TAG, "token: " + token);
         MyFirestore.getWorkplaceColRef().document(token).update("tell",phoneNum).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
@@ -159,20 +159,3 @@ public class MainActivity extends AppCompatActivity {
 }
 
 /** END OF CODE **/
-
-//    public void onRangingClicked(View view) {
-//        Intent myIntent = new Intent(this, RangingActivity.class);
-//        this.startActivity(myIntent);
-//    }
-//    public void onEnableClicked(View view) {
-//        BeaconReferenceApplication application = ((BeaconReferenceApplication) this.getApplicationContext());
-//        if (BeaconManager.getInstanceForApplication(this).getMonitoredRegions().size() > 0) {
-//            application.disableMonitoring();
-//            ((Button)findViewById(R.id.enableButton)).setText("Re-Enable Monitoring");
-//        }
-//        else {
-//            ((Button)findViewById(R.id.enableButton)).setText("Disable Monitoring");
-//            application.enableMonitoring();
-//        }
-//
-//    }

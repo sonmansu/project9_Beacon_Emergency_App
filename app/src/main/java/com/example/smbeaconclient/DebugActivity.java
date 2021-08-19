@@ -25,8 +25,6 @@ import org.altbeacon.beacon.BeaconManager;
 
 public class DebugActivity extends AppCompatActivity {
     protected static final String TAG = "DebugActivity";
-    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-    private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 
     TextView textViewFloor, textViewRanging;
 
@@ -35,7 +33,6 @@ public class DebugActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
         Log.d(TAG, "onCreate called");
-
 
         textViewFloor = findViewById(R.id.textViewFloor);
         textViewRanging = findViewById(R.id.textViewRanging);
@@ -126,20 +123,3 @@ public class DebugActivity extends AppCompatActivity {
 }
 
 /** END OF CODE **/
-
-//    public void onRangingClicked(View view) {
-//        Intent myIntent = new Intent(this, RangingActivity.class);
-//        this.startActivity(myIntent);
-//    }
-//    public void onEnableClicked(View view) {
-//        BeaconReferenceApplication application = ((BeaconReferenceApplication) this.getApplicationContext());
-//        if (BeaconManager.getInstanceForApplication(this).getMonitoredRegions().size() > 0) {
-//            application.disableMonitoring();
-//            ((Button)findViewById(R.id.enableButton)).setText("Re-Enable Monitoring");
-//        }
-//        else {
-//            ((Button)findViewById(R.id.enableButton)).setText("Disable Monitoring");
-//            application.enableMonitoring();
-//        }
-//
-//    }

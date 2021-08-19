@@ -42,6 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:text="get token" />
 </RelativeLayout>
