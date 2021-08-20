@@ -5,13 +5,13 @@
 Bluetooth and Wi-Fi beacons can be used for a host of different applications in manufacturing, retail, and many other market segments. This project will pick an application and design and implement a beacon system to solve a common problem
 
 ## Team Members
-Sumin Sohn -Pusan National University 
-[Taeyeon Kim](https://github.com/kimty103) -Pusan National University
-Jinhyeok Jeon -Pusan National University
-Sean Gomez -Purdue University
-Seockwoo Lee -Pusan National University
-Taehoon Ha -Pusan National University
-Byeongjin Kim - Pusan National University
+Sumin Sohn -Pusan National University  
+[Taeyeon Kim](https://github.com/kimty103) -Pusan National University  
+Jinhyeok Jeon -Pusan National University  
+Sean Gomez -Purdue University  
+Seockwoo Lee -Pusan National University  
+Taehoon Ha -Pusan National University  
+Byeongjin Kim - Pusan National University  
 
 ## Equipment (Hardware)
 - Raspberry Pi 3B
