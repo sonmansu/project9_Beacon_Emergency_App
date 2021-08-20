@@ -1,6 +1,3 @@
-# project9_Beacon_Emergency_App
-project9's beacon emergency app
-
 # Beacon-Based IoT System for Use in the Office : Monitor User’s Location and Alert an Emergency
 
 
