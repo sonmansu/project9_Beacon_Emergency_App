@@ -1,4 +1,4 @@
-# Beacon-Based IoT System for Use in the Office : Monitor User’s Location and Alert an Emergency
+# Beacon-Based IoT System for Use in the Office : Monitor User Location and Alert an Emergency
 
 
 ## Project Topic: IoT Beacon-based system for safety, monitoring, or advertising
@@ -6,7 +6,7 @@ Bluetooth and Wi-Fi beacons can be used for a host of different applications in 
 
 ## Team Members
 Sumin Sohn -Pusan National University 
-Taeyeon Kim(https://github.com/kimty103) -Pusan National University
+[Taeyeon Kim](https://github.com/kimty103) -Pusan National University
 Jinhyeok Jeon -Pusan National University
 Sean Gomez -Purdue University
 Seockwoo Lee -Pusan National University
@@ -18,7 +18,8 @@ Byeongjin Kim - Pusan National University
 - iBeacon
 - Flame sensor
 - MQ-2 gas sensor
-(https://user-images.githubusercontent.com/80534651/130169277-9f46ea48-cf96-4196-932a-31eb9599b0d6.jpg)
+
+[](https://user-images.githubusercontent.com/80534651/130169277-9f46ea48-cf96-4196-932a-31eb9599b0d6.jpg)
 
 
 ## Software (Development Environment
