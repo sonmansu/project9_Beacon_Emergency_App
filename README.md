@@ -19,7 +19,7 @@ Byeongjin Kim - Pusan National University
 - Flame sensor
 - MQ-2 gas sensor
 
-[image](https://user-images.githubusercontent.com/80534651/130169277-9f46ea48-cf96-4196-932a-31eb9599b0d6.jpg)
+![Hardware](https://user-images.githubusercontent.com/80534651/130169277-9f46ea48-cf96-4196-932a-31eb9599b0d6.jpg)
 
 
 ## Software (Development Environment
