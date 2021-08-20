@@ -7,7 +7,7 @@ Bluetooth and Wi-Fi beacons can be used for a host of different applications in 
 ## Team Members
 Sumin Sohn -Pusan National University  
 [Taeyeon Kim](https://github.com/kimty103) -Pusan National University  
-Jinhyeok Jeon -Pusan National University  
+[Jinhyeok Jeon](https://github.com/jinhyeok0204) -Pusan National University  
 Sean Gomez -Purdue University  
 Seockwoo Lee -Pusan National University  
 [Taehoon Ha](https://github.com/Hooni-27) -Pusan National University  
