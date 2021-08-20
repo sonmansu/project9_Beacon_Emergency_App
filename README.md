@@ -10,7 +10,7 @@ Sumin Sohn -Pusan National University
 Jinhyeok Jeon -Pusan National University  
 Sean Gomez -Purdue University  
 Seockwoo Lee -Pusan National University  
-Taehoon Ha -Pusan National University  
+[Taehoon Ha](https://github.com/Hooni-27) -Pusan National University  
 Byeongjin Kim - Pusan National University  
 
 ## Equipment (Hardware)
