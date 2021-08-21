@@ -13,6 +13,26 @@ Seockwoo Lee -Pusan National University
 [Taehoon Ha](https://github.com/Hooni-27) -Pusan National University  
 Byeongjin Kim - Pusan National University  
 
+### ■&nbsp;&nbsp;Project Introduction
+▣ The project is part of the IITP Summer Program, and **Korean universities & Purdue university** participated together.<br>
+▣ The members consist of 6 **pusan national University** students and 1 **Purdue University** student.<br>
+▣ This project's goal is to improve the problems of previous disaster prevention systems using IoT technology.<br>
+<br>
+_It has the following advantages:_
+#### **1. Accurate information collection and secure information reliability through a separate network.**
+- It has a wider sensing distance than Bluetooth.
+- Detailed location information can be identified.
+
+
+#### **2. A low unit price compared to previous communication technology.**
+- It can be maintained for a long time with low power using Bluetooth Low Energy(BLE)
+- It is advantageous for real-time large data processing.
+
+### ■&nbsp;&nbsp;Project Differentiation
+- Through constant interaction with Beacon, users' information is updated periodically.
+- This information is used to control Personnel and to figure out people locate in disaster accidents in real time.
+- It is expected to reduce bottlenecks and panics that have increased the scale of disasters.
+
 ## Equipment (Hardware)
 - Raspberry Pi 3B
 - iBeacon
